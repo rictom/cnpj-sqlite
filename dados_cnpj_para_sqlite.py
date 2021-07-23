@@ -109,7 +109,7 @@ colunas_socios = [
 colunas_simples = [
     'cnpj_basico',
     'opcao_simples',
-    'data_opcao_simples'
+    'data_opcao_simples',
     'data_exclusao_simples',
     'opcao_mei',
     'data_opcao_mei',
