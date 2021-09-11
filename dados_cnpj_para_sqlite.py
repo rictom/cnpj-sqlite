@@ -298,12 +298,11 @@ carregaTabelaCodigo('.NATJUCSV', 'natureza_juridica')
 carregaTabelaCodigo('.PAISCSV', 'pais')
 carregaTabelaCodigo('.QUALSCSV', 'qualificacao_socio')
 
-engine.execute('CREATE INDEX idx_municipio ON municipio(codigo);')
 #inserir na tabela referencia_
 
 qtde_cnpjs = engine.execute('select count(*) as contagem from empresas;').fetchone()[0]
 
-engine.execute(f"insert into _referencia (referencia, valor) values ('CNPJ', '{dataReferencia}')'")
-engine.execute(f"insert into _referencia (referencia, valor) values ('cnpj_qtde', '{qtde_cnpjs}')'")
+engine.execute(f"insert into _referencia (referencia, valor) values ('CNPJ', '{dataReferencia}')")
+engine.execute(f"insert into _referencia (referencia, valor) values ('cnpj_qtde', '{qtde_cnpjs}')")
 
 print('FIM!!!', time.asctime())
