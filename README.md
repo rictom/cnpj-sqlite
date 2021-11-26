@@ -23,7 +23,7 @@ Ao final, será gerado um arquivo cnpj.db, no formato sqlite, que pode ser abert
 O arquivo cnpj.db poderá ser usado no meu projeto rede-cnpj (https://github.com/rictom/rede-cnpj).<br>
 
 ## Arquivo sqlite já tratado:
-Arquivo sqlite, referência 9/10/2021 (.D11009.), está disponível no google drive, zipado em 3 pedaços:
+Arquivo sqlite, referência 13/11/2021 (.D11113.), está disponível no google drive, zipado em 4 pedaços:
 https://drive.google.com/drive/folders/1Gkeq27aHv6UgT8m30fc4hZWMPqdhEHWr?usp=sharing <br>
 Utilize o 7-zip para descompactar.<br>
 
