@@ -89,7 +89,7 @@ from loguru import logger
 dataReferencia = '17/07/2021' #input('Data de referência da base dd/mm/aaaa: ')
 
 # Pasta de saída para o arquivo SQLITE de banco de dados
-OUTPUT_DIR = r"dados-publicos"
+OUTPUT_DIR = "dados-publicos"
 # Nome do arquivo de banco de dados
 SQLITE_FILENAME = "cnpj.db"
 # Nome do arquivo com o caminho em que ele se encontra
@@ -118,15 +118,23 @@ class FileExists(Exception):
     def __str__(self):
         return f"O arquivo de banco de dados já existe. Apague-o primeiro e tente novamente."
 
+class FilesNotFound(Exception):
+    def __str__(self):
+        return f"Arquivos CSVs não encontrados!!!"
+
 def _load_table(table: str, file_extension: str, columns: list):
     engine_url = SQLHelper().engine.url
-    files = list(glob.glob(OUTPUT_DIR, '*'+file_extension))
+    files = list(glob.glob(os.path.join(OUTPUT_DIR)+'/*'+file_extension))
+
+    if files == []:
+        raise FilesNotFound
+
     for file in files:
         logger.info(f"Carregando arquivo: {file}")
         ddf = dd.read_csv(file, sep=';', header=None, names=columns,
-                econding='latin1', dtype=str, na_filter=None)
+                encoding='latin1', dtype=str, na_filter=None)
         ddf.to_sql(table, str(engine_url), index=None, if_exists='append',
-                dtype=sqlachelmy.sql.sqltypes.TEXT)
+                dtype=sqlalchemy.sql.sqltypes.TEXT)
 
 class SQLHelper:
     """ Classe que irá concatenar as funcionalidades e manipular SQL. """
@@ -172,7 +180,8 @@ def load_table_types():
     """ Joga para a base de dados as tabelas que tem tipos defindos além de código e descrição.
         Essas tabelas são EMPRESAS, ESTABELECIMENTO, SOCIOS e SIMPLES.
     """
-    for table, columns, file_extension in TYPE_TABLES_COLUMNS_EXT.items():
+    for table, columns_file_extension in TYPE_TABLES_COLUMNS_EXT.items():
+        columns, file_extension = columns_file_extension
         _load_table(table, file_extension, columns)
     return True
 
@@ -180,33 +189,33 @@ def post_sql():
      """Executa instruções SQL de finais."""
      
      sqls = '''
-     ALTER TABLE empresas RENAME COLUMN capital_social TO capital_social_str;
+     ALTER TABLE empresas RENAME COLUMN cap_soc TO cap_soc_str;
      ALTER TABLE empresas ADD COLUMN capital_social real;
-     UPDATE empresas SET capital_social = cast(replace(capital_social_str,',', '.') as real);
+     UPDATE empresas SET cap_soc = cast(replace(cap_soc_str,',', '.') as real);
      ALTER TABLE estabelecimento ADD COLUMN cnpj text;
-     UPDATE estabelecimento SET cnpj = cnpj_basico||cnpj_ordem||cnpj_dv;
-     CREATE  INDEX idx_empresas_cnpj_basico ON empresas (cnpj_basico);
-     CREATE  INDEX idx_empresas_razao_social ON empresas (razao_social);
-     CREATE  INDEX idx_estabelecimento_cnpj_basico ON estabelecimento (cnpj_basico);
+     UPDATE estabelecimento SET cnpj = cnpj_b||cnpj_o||cnpj_dv;
+     CREATE  INDEX idx_empresas_cnpj_b ON empresas (cnpj_b);
+     CREATE  INDEX idx_empresas_razao_s ON empresas (razao_s);
+     CREATE  INDEX idx_estabelecimento_cnpj_b ON estabelecimento (cnpj_b);
      CREATE  INDEX idx_estabelecimento_cnpj ON estabelecimento (cnpj);
 
      ALTER TABLE socios RENAME TO socios_original;
-     CREATE INDEX idx_socios_original_cnpj_basico
-     ON socios_original(cnpj_basico);
+     CREATE INDEX idx_socios_original_cnpj_b
+     ON socios_original(cnpj_b);
 
      CREATE TABLE socios AS 
      SELECT te.cnpj as cnpj, ts.*
-     FROM socios_original ts left join estabelecimento te on te.cnpj_basico = ts.cnpj_basico
-     WHERE te.matriz_filial="1";
+     FROM socios_original ts left join estabelecimento te on te.cnpj_b = ts.cnpj_b
+     WHERE te.id_mat_fil="1";
 
      --DROP INDEX [IF EXISTS] index_name;
      DROP TABLE IF EXISTS socios_original;
 
      CREATE INDEX idx_socios_cnpj ON socios(cnpj);
-     CREATE INDEX idx_socios_cnpj_cpf_socio ON socios(cnpj_cpf_socio);
-     CREATE INDEX idx_socios_nome_socio ON socios(nome_socio);
+     CREATE INDEX idx_socios_cnpj_cpf_socio ON socios(cpf_socio);
+     CREATE INDEX idx_socios_nome_socio ON socios(nom_socio);
 
-     CREATE INDEX idx_simples_cnpj_basico ON simples(cnpj_basico);
+     CREATE INDEX idx_simples_cnpj_basico ON simples(cnpj_b);
 
      CREATE TABLE "_referencia" (
             "referencia"	TEXT,
