@@ -36,7 +36,10 @@ function manage_zip_files(){
   
   echo "Movendo os arquivos ZIP"
   mv -v *.zip dados-publicos-zip 
+
+  echo "Movendo os arquivos CSV"
+  mv -v *K* dados-publicos
 }
 
-#download_data()
+download_data()
 manage_zip_files

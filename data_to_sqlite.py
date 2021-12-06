@@ -100,7 +100,7 @@ TYPE_TABLES_COLUMNS_EXT={
     "estabelecimento":(('cnpj_b', 'cnpj_o', 'cnpj_dv', 'id_mat_fil', 'nom_fan', 'sit_cad', 'dt_sit_cad', 'mot_sit_cad',
             'nom_cid_ext','pais','dt_ini_ativ','cnae_fp','cnae_fs', 'tipo_log', 'log', 'num', 'comp', 'bairro',
             'cep','uf','municipio','ddd1','tel1','ddd2','tel2','ddd_fax','fax','email','sit_especial','dt_sit_especial'),'.ESTABELE'),
-    "socios":(('cnpj_b', 'id_socio', 'cpf_socio', 'qual_socio', 'dt_ent_soc', 'pais', 'rep_legal', 'nome_rep', 'qual_rep_legal', 'faixa_etaria'),'.SOCIOCSV'),
+    "socios":(('cnpj_b', 'id_socio', 'nom_socio', 'cpf_socio', 'qual_socio', 'dt_ent_soc', 'pais', 'rep_legal', 'nome_rep', 'qual_rep_legal', 'faixa_etaria'),'.SOCIOCSV'),
     "simples":(('cnpj_b', 'opcao_simples', 'dt_opcao_simples', 'dt_exclusao_simples', 'opcao_mei', 'dt_opcao_mei', 'dt_exclusao_mei'), '.SIMPLES.CSV')
 }
 
