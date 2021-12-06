@@ -6,10 +6,11 @@ authors = ["Jean Landim <jewanbb@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-pandas = "^1.3.4"
 loguru = "^0.5.3"
-dask = "^2021.11.2"
+dask = {extras = ["dataframe"], version = "^2021.11.2"}
 SQLAlchemy = "^1.4.27"
+ipython = "^7.30.1"
+pandas = "^1.3.4"
 
 [tool.poetry.dev-dependencies]
 
