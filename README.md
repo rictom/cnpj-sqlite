@@ -58,6 +58,7 @@ Para pegar o arquivo SQLite, mais atualizado, sugiro ver o README do repositóri
 
 versão 0.2 (dezembro/2021)
 - Refatoramento e melhorias do código,  por Jean Landim.
+- Adição de script SQL para converter algumas tabelas para JSON
 
 versão 0.1 (julho/2021)
 - primeira versão
