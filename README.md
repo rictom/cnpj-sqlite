@@ -2,7 +2,7 @@
 Script em python para carregar os arquivos de cnpj dos dados públicos da Receita Federal em formato sqlite.
 
 ## Dados públicos de cnpj no site da Receita:
-A partir de 2021 os dados da Receita Federal estão disponíveis no link https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/consultas/dados-publicos-cnpj (ou http://200.152.38.155/CNPJ/ aqui os arquivos aparecem primeiro) em formato csv zipado. 
+A partir de 2021 os dados da Receita Federal estão disponíveis no link https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/consultas/dados-publicos-cnpj ou http://200.152.38.155/CNPJ/ (aqui os arquivos aparecem primeiro) em formato csv zipado. 
 
 ## Pré-requisitos:
 Python 3.8;<br>
@@ -24,7 +24,7 @@ O arquivo cnpj.db poderá ser usado no meu projeto rede-cnpj (https://github.com
 
 ## Arquivo sqlite já tratado:
 O banco de dados no formato sqlite, referência 13/11/2021 (.D11113.), está disponível em  https://www.mediafire.com/folder/1vdqoa2mk0fu9/cnpj-sqlite.
-Utilize o 7-zip para descompactar os arquivos cnpj.7z.001 a cnpj.7z.004.<br>
+Baixe os arquivos cnpj.7z.001 a cnpj.7z.004 e utilize o 7-zip (https://www.7-zip.org/download.html) para descompactar.<br>
 
 ## Histórico de versões
 
