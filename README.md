@@ -16,7 +16,7 @@ Crie uma pasta com o nome "dados-publicos".<br>
 Para iniciar esse script, em um console DOS digite<br>
 python dados_cnpj_para_sqlite.py<br>
 
-No meu notebook a execução durou cerca de 2hs.
+O processamento durou cerca de 2hs em um notebook i7 de oitava geração.
 
 Ao final, será gerado um arquivo cnpj.db, no formato sqlite, que pode ser aberto no DB Browser for SQLITE (https://sqlitebrowser.org/).<br>
 
