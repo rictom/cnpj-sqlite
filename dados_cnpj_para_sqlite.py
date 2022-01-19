@@ -1,59 +1,45 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Mar 26 02:54:50 2021
+Modified on Sun Jan 16 15:12:00 2022
 
-@author: ricar
+@author: rictom
+https://github.com/rictom/cnpj-sqlite
+
+A rotina:
+    -descompacta os arquivos já baixados do site da receita a partir de 2021 (layout novo);
+    -cria uma base cnpj.db no formato sqlite;
+    -cria indices nas colunas CNPJ, Razão Social, cpf/cnpj de sócios e nome de Sócios.
+A rotina NÃO FAZ download dos arquivos do site da Receita. Utilize um gerenciador de downloads.
+Os arquivos zipados da Receita devem ser colocados na definida na variável pasta_compactados.
+Os arquivos descompactados e a base em sqlite serão gerados na pasta definida na variável pasta_saida.
+A utilização da biblioteca DASK tem desempenho melhor do que o uso de PANDAS (quase 10x mais rápido).
 """
 
 import pandas as pd, sqlalchemy, glob, time, dask.dataframe as dd
-import os
+import os, sys, zipfile
 
-dataReferencia = '17/07/2021' #input('Data de referência da base dd/mm/aaaa: ')
-pasta_compactados = r"dados-publicos-zip"
+dataReferencia = 'dd/mm/2022' #input('Data de referência da base dd/mm/aaaa: ')
+pasta_compactados = r"dados-publicos-zip" #local dos arquivos zipados da Receita
 pasta_saida = r"dados-publicos" #esta pasta deve estar vazia. 
-#pasta_tabelas = r"tabelas"
 
 cam = os.path.join(pasta_saida, 'cnpj.db') 
 if os.path.exists(cam):
-    print('o arquivo ' + cam + ' já existe. Apague primeiro e rode este script novamente.')
-    1/0
+    input(f'O arquivo {cam} já existe. Apague-o primeiro e rode este script novamente.')
+    sys.exit()
 
-#engine = sqlalchemy.create_engine('sqlite:///cnpj.db')
+print('Início:', time.asctime())
+
 engine = sqlalchemy.create_engine(f'sqlite:///{cam}')
 
-arquivos_a_zipar = list(glob.glob(os.path.join(pasta_compactados,r'*.zip')))
-import zipfile
+arquivos_zip = list(glob.glob(os.path.join(pasta_compactados,r'*.zip')))
 
-for arq in arquivos_a_zipar:
-    print('descompactando ' + arq)
+for arq in arquivos_zip:
+    print('descompactando ' + arq, time.asctime())
     with zipfile.ZipFile(arq, 'r') as zip_ref:
         zip_ref.extractall(pasta_saida)
 
 tipos = ['.EMPRECSV', '.ESTABELE', '.SOCIOCSV']
-
-arquivos_emprescsv = list(glob.glob(os.path.join(pasta_saida, '*' + tipos[0])))
-
-# # opção, juntar os csvs usando o cmd do windows:
-# import subprocess
-# #result = subprocess.check_output('dir *.*', shell = True)
-# #print(result.decode('latin1'))
-# #list_files = subprocess.run(["ls", "-l"])
-# '''
-# import subprocess
-# result = subprocess.check_output('dir *.*', shell = True)
-# '''
-# '''
-# juntar csv no dos
-# >copy *.EMPRECSV EMPRECSV.csv
-# >copy *.ESTABELE ESTABELE.csv
-# copy *.SOCIOCSV SOCIOCSV.csv
-# '''
-
-# #juntar os arquivos csv por comando
-# result = subprocess.check_output(r'copy dados-publicos\*.EMPRECSV dados-publicos\EMPRECSV.csv', shell = True)
-# result = subprocess.check_output(r'copy dados-publicos\*.ESTABELE dados-publicos\ESTABELE.csv', shell = True)
-# result = subprocess.check_output(r'copy dados-publicos\*.SOCIOCSV dados-publicos\SOCIOCSV.csv', shell = True)
-
 
 def sqlCriaTabela(nomeTabela, colunas):
     sql = 'CREATE TABLE ' + nomeTabela + ' ('
@@ -115,7 +101,6 @@ colunas_simples = [
     'data_opcao_mei',
     'data_exclusao_mei']
 
-
 sql = sqlCriaTabela('estabelecimento', colunas_estabelecimento)
 engine.execute(sql)
 sql = sqlCriaTabela('empresas', colunas_empresas)
@@ -125,96 +110,30 @@ engine.execute(sql)
 sql = sqlCriaTabela('simples', colunas_simples)
 engine.execute(sql)
 
-
-
 def carregaTipo(nome_tabela, tipo, colunas):
     #usando dask, bem mais rápido que pandas
     arquivos = list(glob.glob(os.path.join(pasta_saida, '*' + tipo)))
     for arq in arquivos:
         print(f'carregando: {arq=}')
         print('lendo csv ...', time.asctime())
-        ddf = dd.read_csv(arq, sep=';', header=None, names=colunas, #nrows=1000,
-                         encoding='latin1', dtype=str,
-                         na_filter=None)
-        #df.columns = colunas.copy()
-        #engine.execute('Drop table if exists estabelecimento')
-        print('to_sql...', time.asctime())
-        ddf.to_sql(nome_tabela, str(engine.url), index=None, if_exists='append', #method='multi', chunksize=1000, 
-                  dtype=sqlalchemy.sql.sqltypes.TEXT)
+        ddf = dd.read_csv(arq, sep=';', header=None, names=colunas, encoding='latin1', dtype=str, na_filter=None)
+        #dask possibilita usar curinga no nome de arquivo, por ex: 
+        #ddf = dd.read_csv(pasta_saida+r'\*' + tipo, sep=';', header=None, names=colunas ...
+        ddf.to_sql(nome_tabela, str(engine.url), index=None, if_exists='append', dtype=sqlalchemy.sql.sqltypes.TEXT)
         print('fim parcial...', time.asctime())
-
-# def carregaTipoDaskAlternativo(nome_tabela, tipo, colunas):
-#     #usando dask, bem mais rápido que pandas
-#     print(f'carregando: {tipo=}')
-#     print('lendo csv ...', time.asctime())
-#     #dask possibilita usar curinga no nome de arquivo
-#     ddf = dd.read_csv(pasta_saida+r'\*' + tipo, 
-#                       sep=';', header=None, names=colunas, 
-#                       encoding='latin1', dtype=str,
-#                       na_filter=None)
-#     print('to_sql...', time.asctime())
-#     ddf.to_sql(nome_tabela, str(engine.url), index=None, if_exists='append', #method='multi', chunksize=1000, 
-#               dtype=sqlalchemy.sql.sqltypes.TEXT)
-#     print('fim parcial...', time.asctime())
-
-# def carregaTipoPandas(nome_tabela, tipo, colunas):
-#     #usando pandas
-#     arquivos = list(glob.glob(pasta_saida+r'\*' + tipo))
-#     for arq in arquivos:
-#         print(f'carregando: {arq=}')
-#         print('lendo csv ...', time.asctime())
-#         df = pd.read_csv(arq, sep=';', header=None, names=colunas, #nrows=1000,
-#                          encoding='latin1', dtype=str,
-#                          na_filter=None)
-#         #df.columns = colunas.copy()
-#         #engine.execute('Drop table if exists estabelecimento')
-#         print('to_sql...', time.asctime())
-#         df.to_sql(nome_tabela, engine, index=None, if_exists='append',method='multi',
-#                   chunksize=1000, dtype=sqlalchemy.sql.sqltypes.TEXT)
-#         print('fim parcial...', time.asctime())
 
 carregaTipo('estabelecimento', '.ESTABELE', colunas_estabelecimento)
 carregaTipo('socios', '.SOCIOCSV', colunas_socios)
 carregaTipo('empresas', '.EMPRECSV', colunas_empresas)
 carregaTipo('simples', '.SIMPLES.CSV.*', colunas_simples)
-#converter para utf8
-#powershell -command "Get-Content .\test.txt" > test-utf8.txt
-#GEt-Content .\ESTABELE.csv > estabeleutf8.csv
-#rodar powershell a partir do cmd:
-#powershell -command "Get-Content .\*.SIMPLES.*" > simplesutf8.csv
-
-# '''
-# #carregar usando .import do sqlite está dando erro no campo cnae_secundario, onde está "cod2,cod3,cod4"- o .import
-# #quebra os codigos separados por vírgula dentro das aspas para colunas
-
-# .mode csv
-# .separator ";"
-# .import EMPRECSVutf8.csv empresas
-# .import estabeleutf8.csv estabelecimento
-# .import sociosutf8.csv socios
-# '''
-# #sqlite3.exe cnpj.db < cria01.sql
-
-# '''
-# sqlite> .mode csv
-# sqlite> .separator ";"
-# sqlite> CREATE TABLE empresas (
-#    ...> cnpj_basico TEXT,
-#    ...> razao_social TEXT,
-#    ...> natureza_juridica TEXT,
-#    ...> qualificacao_responsavel TEXT,
-#    ...> capital_social_str TEXT,
-#    ...> porte_empresa TEXT,
-#    ...> ente_federativo_responsavel TEXT)
-#    ...> ;
-# sqlite> .import EMPRECSVutf8.csv empresas
-# '''
 
 sqls = '''
 ALTER TABLE empresas RENAME COLUMN capital_social TO capital_social_str;
 ALTER TABLE empresas ADD COLUMN capital_social real;
 update  empresas
 set capital_social = cast( replace(capital_social_str,',', '.') as real);
+
+ALTER TABLE empresas DROP COLUMN capital_social_str;
 
 ALTER TABLE estabelecimento ADD COLUMN cnpj text;
 Update estabelecimento
@@ -235,7 +154,6 @@ from socios_original ts
 left join estabelecimento te on te.cnpj_basico = ts.cnpj_basico
 where te.matriz_filial="1";
 
---DROP INDEX [IF EXISTS] index_name;
 DROP TABLE IF EXISTS socios_original;
 
 CREATE INDEX idx_socios_cnpj ON socios(cnpj);
@@ -250,44 +168,17 @@ CREATE TABLE "_referencia" (
 );
 '''
 
-
-# '''
-# -- ajuste de nomes de socios vazios para tabela de abril/2021
-# create table socios2 AS
-# select ts.cnpj, ts.cnpj_basico, 
-# 		ts.identificador_de_socio, 
-# 		case when ts.nome_socio<>"" then ts.nome_socio when t.nome_socio is not null then t.nome_socio else "" end as nome_socio,
-# 		ts.cnpj_cpf_socio,
-#             ts.qualificacao_socio,
-#             ts.data_entrada_sociedade,
-#             ts.pais,
-#             ts.representante_legal,
-#             ts.nome_representante,
-#             ts.qualificacao_representante_legal,
-#             ts.faixa_etaria
-# from cnpj.socios ts
-# left join socios t on t.cnpj=ts.cnpj and t.cnpj_cpf_socio=ts.cnpj_cpf_socio
-# -- where ts.nome_socio=""
-# --limit 1000
-# '''
-
 print('Inicio sqls:', time.asctime())
 for k, sql in enumerate(sqls.split(';')):
     print('-'*20 + f'\nexecutando parte {k}:\n', sql)
     engine.execute(sql)
     print('fim parcial...', time.asctime())
 print('fim sqls...', time.asctime())
-                
-#https://database.guide/5-ways-to-run-sql-script-from-file-sqlite/
-#sqlite3.exe Test.db -init insert_data.sql
-#sqlite3.exe Test.db ".read insert_data.sql"
-
 
 def carregaTabelaCodigo(extensaoArquivo, nomeTabela):
     arquivo = list(glob.glob(os.path.join(pasta_saida, '*' + extensaoArquivo)))[0]
     print('carregando tabela '+arquivo)
     dtab = pd.read_csv(arquivo, dtype=str, sep=';', encoding='latin1', header=None, names=['codigo','descricao'])
-    #dqualificacao_socio['codigo'] = dqualificacao_socio['codigo'].apply(lambda x: str(int(x)))
     dtab.to_sql(nomeTabela, engine, if_exists='replace', index=None)
     engine.execute(f'CREATE INDEX idx_{nomeTabela} ON {nomeTabela}(codigo);')
 
@@ -300,9 +191,25 @@ carregaTabelaCodigo('.QUALSCSV', 'qualificacao_socio')
 
 #inserir na tabela referencia_
 
-qtde_cnpjs = engine.execute('select count(*) as contagem from empresas;').fetchone()[0]
+qtde_cnpjs = engine.execute('select count(*) as contagem from estabelecimento;').fetchone()[0]
 
 engine.execute(f"insert into _referencia (referencia, valor) values ('CNPJ', '{dataReferencia}')")
 engine.execute(f"insert into _referencia (referencia, valor) values ('cnpj_qtde', '{qtde_cnpjs}')")
+
+print('Aplicando VACUUM para compactar a base--------------------------------', time.ctime())
+engine.execute('VACUUM')
+print('Aplicando VACUUM-FIM-------------------------------', time.ctime())
+
+# import zipfile
+# print('compactando... ', time.ctime())
+# with zipfile.ZipFile(cam + '.7z', 'w',  zipfile.ZIP_DEFLATED) as zipf:
+#     zipf.write(cam, os.path.split(cam)[1])    
+# print('compactando... FIM ', time.ctime())
+
+print('-'*20)
+print(f'Foi criado o arquivo {cam}, com a base de dados no formato SQLITE.')
+print('Qtde de empresas (matrizes):', engine.execute('SELECT COUNT(*) FROM empresas').fetchone()[0])
+print('Qtde de estabelecimentos (matrizes e fiiais):', engine.execute('SELECT COUNT(*) FROM estabelecimento').fetchone()[0])
+print('Qtde de sócios:', engine.execute('SELECT COUNT(*) FROM socios').fetchone()[0])
 
 print('FIM!!!', time.asctime())
