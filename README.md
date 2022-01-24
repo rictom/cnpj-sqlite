@@ -9,11 +9,14 @@ Python 3.8;<br>
 Bibliotecas pandas, dask e sqlalchemy.<br>
 
 ## Utilizando o script:
+Este projeto não baixa os arquivos do site da Receita. Sugiro utilizar um gerenciador de downloads. Obtenha uma relação dos arquivos disponíveis pelo comando<br>
+python dados_cnpj_lista_url.py<br>
+
 Baixe todos os arquivos zipados do site da Receita e salve na pasta "dados-publicos-zip".<br>
-O download no site da Receita é lento, pode demorar várias horas. Sugiro utilizar um gerenciador de downloads.<br><br>
+O download no site da Receita é lento, pode demorar várias horas. <br><br>
 Crie uma pasta com o nome "dados-publicos".<br>
 
-Para iniciar esse script, em um console DOS digite<br>
+Para iniciar a conversão dos arquivos para o formato sqlite, digite em um console DOS<br>
 python dados_cnpj_para_sqlite.py<br>
 
 O processamento durou cerca de 2hs em um notebook i7 de oitava geração.
