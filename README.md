@@ -37,7 +37,7 @@ Lista das tabelas do arquivo cnpj.db no DBBrowser for SQLITE.
 O script em https://github.com/rictom/cnpj-mysql faz o carregamento dos dados para o banco de dados em MYSQL.<br>
 
 ## Histórico de versões
-versão 0.2 (janeiro/2021)
+versão 0.2 (janeiro/2022)
 - removido código não utilizado
 
 versão 0.1 (julho/2021)
