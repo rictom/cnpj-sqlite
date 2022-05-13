@@ -2,18 +2,18 @@
 Script em python para converter os arquivos de dados públicos de CNPJs para o formato SQLITE. O código é compatível com o layout das tabelas disponibilizadas pela Receita Federal a partir de 2021.
 
 ## Dados públicos de CNPJs no site da Receita:
-Os arquivos csv zipados com os dados de CNPJs estão disponíveis em https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/consultas/dados-publicos-cnpj ou http://200.152.38.155/CNPJ/ (aqui os arquivos aparecem primeiro). 
+Os arquivos csv zipados com os dados de CNPJs estão disponíveis em https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/consultas/dados-publicos-cnpj ou http://200.152.38.155/CNPJ/. No segundo endereço os arquivos aparecem primeiro. 
 
 ## Pré-requisitos:
 Python 3.8;<br>
 Bibliotecas pandas, dask e sqlalchemy.<br>
 
 ## Utilizando o script:
-Este projeto não baixa os arquivos do site da Receita. Sugiro utilizar um gerenciador de downloads. Obtenha uma relação dos arquivos disponíveis pelo comando<br>
+Este projeto não baixa os arquivos do site da Receita.  Obtenha uma relação dos arquivos disponíveis pelo comando<br>
 python dados_cnpj_lista_url.py<br>
 
 Baixe todos os arquivos zipados do site da Receita e salve na pasta "dados-publicos-zip".<br>
-O download no site da Receita é lento, pode demorar várias horas. <br><br>
+O download no site da Receita é lento, pode demorar várias horas. <br>Sugiro utilizar um gerenciador de downloads, como o https://portableapps.com/apps/internet/free-download-manager-portable.<br><br>
 Crie uma pasta com o nome "dados-publicos".<br>
 
 Para iniciar a conversão dos arquivos para o formato sqlite, digite em um console DOS<br>
@@ -28,7 +28,7 @@ O projeto https://github.com/rictom/cnpj_consulta utiliza o arquivo cnpj.db para
 
 ## Arquivo sqlite já tratado:<a id="arquivo_sqlite"></a>
 O banco de dados no formato sqlite, referência 9/4/2022 (.D20409.), está disponível em  https://www.mediafire.com/folder/1vdqoa2mk0fu9/cnpj-sqlite.
-Baixe o arquivo cnpj.7z e utilize o 7-zip (https://www.7-zip.org/download.html) para descompactar.<br>
+Baixe o arquivo cnpj.db.7z e utilize o 7-zip (https://www.7-zip.org/download.html) para descompactar.<br>
 
 ![image](https://user-images.githubusercontent.com/71139693/154585662-8c38c206-cb80-492e-8413-47699c79b4fd.png)<br>
 Lista das tabelas do arquivo cnpj.db no DBBrowser for SQLITE.
