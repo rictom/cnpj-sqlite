@@ -35,7 +35,7 @@ engine = sqlalchemy.create_engine(f'sqlite:///{cam}')
 arquivos_zip = list(glob.glob(os.path.join(pasta_compactados,r'*.zip')))
 
 for arq in arquivos_zip:
-    print('descompactando ' + arq, time.asctime())
+    print(time.asctime(), 'descompactando ' + arq)
     with zipfile.ZipFile(arq, 'r') as zip_ref:
         zip_ref.extractall(pasta_saida)
 
@@ -159,6 +159,9 @@ DROP TABLE IF EXISTS socios_original;
 CREATE INDEX idx_socios_cnpj ON socios(cnpj);
 CREATE INDEX idx_socios_cnpj_cpf_socio ON socios(cnpj_cpf_socio);
 CREATE INDEX idx_socios_nome_socio ON socios(nome_socio);
+CREATE INDEX idx_socios_representante ON socios(representante_legal);
+CREATE INDEX idx_socios_representante_nome ON socios(nome_representante);
+
 
 CREATE INDEX idx_simples_cnpj_basico ON simples(cnpj_basico);
 
@@ -196,15 +199,15 @@ qtde_cnpjs = engine.execute('select count(*) as contagem from estabelecimento;')
 engine.execute(f"insert into _referencia (referencia, valor) values ('CNPJ', '{dataReferencia}')")
 engine.execute(f"insert into _referencia (referencia, valor) values ('cnpj_qtde', '{qtde_cnpjs}')")
 
-print('Aplicando VACUUM para compactar a base--------------------------------', time.ctime())
+print('Aplicando VACUUM para diminuir o tamanho da base--------------------------------', time.ctime())
 engine.execute('VACUUM')
 print('Aplicando VACUUM-FIM-------------------------------', time.ctime())
 
-# import zipfile
-# print('compactando... ', time.ctime())
-# with zipfile.ZipFile(cam + '.7z', 'w',  zipfile.ZIP_DEFLATED) as zipf:
+#import zipfile
+#print('zipando... ', time.ctime())
+#with zipfile.ZipFile(cam + '.7z', 'w',  zipfile.ZIP_DEFLATED) as zipf:
 #     zipf.write(cam, os.path.split(cam)[1])    
-# print('compactando... FIM ', time.ctime())
+#print('zipando... FIM ', time.ctime())
 
 print('-'*20)
 print(f'Foi criado o arquivo {cam}, com a base de dados no formato SQLITE.')
