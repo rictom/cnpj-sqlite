@@ -16,15 +16,15 @@ Baixe todos os arquivos zipados do site da Receita e salve na pasta "dados-publi
 O download no site da Receita é lento, pode demorar várias horas. <br>Sugiro utilizar um gerenciador de downloads, como o https://portableapps.com/apps/internet/free-download-manager-portable.<br><br>
 Crie uma pasta com o nome "dados-publicos".<br>
 
-Para iniciar a conversão dos arquivos para o formato sqlite, digite em um console DOS<br>
+Para iniciar a conversão dos arquivos para o formato sqlite, digite em um console:<br>
 python dados_cnpj_para_sqlite.py<br>
 
-O processamento durou cerca de 2hs em um notebook i7 de oitava geração.
+O processamento leva cerca de 2hs em um notebook i7 de oitava geração.
 
 Ao final, será gerado um arquivo cnpj.db, no formato sqlite, que pode ser aberto no DB Browser for SQLITE (https://sqlitebrowser.org/).<br>
 
 O arquivo cnpj.db poderá ser usado no meu projeto rede-cnpj (https://github.com/rictom/rede-cnpj), que permite visualização gráfica de relacionamentos entre empresas e sócios. Este projeto está rodando online em https://www.redecnpj.com.br.<br>
-O projeto https://github.com/rictom/cnpj_consulta utiliza o arquivo cnpj.db para visualizar os dados de cnpj em formato de tabela.<br>
+O projeto https://github.com/rictom/cnpj_consulta também utiliza o arquivo cnpj.db para visualizar os dados de cnpj em formato de tabela.<br>
 
 ## Arquivo sqlite já tratado:<a id="arquivo_sqlite"></a>
 O banco de dados no formato sqlite, referência 14/5/2022 (.D20514.), está disponível em  https://www.mediafire.com/folder/1vdqoa2mk0fu9/cnpj-sqlite.
