@@ -37,7 +37,7 @@ Lista das tabelas do arquivo cnpj.db no DBBrowser for SQLITE.
 O script em https://github.com/rictom/cnpj-mysql faz o carregamento dos dados para o banco de dados em MYSQL.<br>
 
 ## Histórico de versões
-versão 0.2 (janeiro/2022)
+versão 0.3 (maio/2022)
 - inclusão de índice na coluna representante_legal da tabela sócios.
 
 versão 0.2 (janeiro/2022)
