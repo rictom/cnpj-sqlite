@@ -1,3 +1,5 @@
 pandas
 sqlalchemy
 dask
+beautifulsoup4
+requests
