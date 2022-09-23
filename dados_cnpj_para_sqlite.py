@@ -19,7 +19,7 @@ A utilização da biblioteca DASK tem desempenho melhor do que o uso de PANDAS (
 import pandas as pd, sqlalchemy, glob, time, dask.dataframe as dd
 import os, sys, zipfile
 
-dataReferencia = 'dd/mm/2022' #input('Data de referência da base dd/mm/aaaa: ')
+dataReferencia = 'xx/xx/2022' #input('Data de referência da base dd/mm/aaaa: ')
 pasta_compactados = r"dados-publicos-zip" #local dos arquivos zipados da Receita
 pasta_saida = r"dados-publicos" #esta pasta deve estar vazia. 
 
@@ -39,7 +39,23 @@ for arq in arquivos_zip:
     with zipfile.ZipFile(arq, 'r') as zip_ref:
         zip_ref.extractall(pasta_saida)
 
-tipos = ['.EMPRECSV', '.ESTABELE', '.SOCIOCSV']
+#carrega tabelas pequenas e indexa
+def carregaTabelaCodigo(extensaoArquivo, nomeTabela):
+    arquivo = list(glob.glob(os.path.join(pasta_saida, '*' + extensaoArquivo)))[0]
+    print('carregando tabela '+arquivo)
+    dtab = pd.read_csv(arquivo, dtype=str, sep=';', encoding='latin1', header=None, names=['codigo','descricao'])
+    dtab.to_sql(nomeTabela, engine, if_exists='replace', index=None)
+    engine.execute(f'CREATE INDEX idx_{nomeTabela} ON {nomeTabela}(codigo);')
+
+carregaTabelaCodigo('.CNAECSV','cnae')
+carregaTabelaCodigo('.MOTICSV', 'motivo')
+carregaTabelaCodigo('.MUNICCSV', 'municipio')
+carregaTabelaCodigo('.NATJUCSV', 'natureza_juridica')
+carregaTabelaCodigo('.PAISCSV', 'pais')
+carregaTabelaCodigo('.QUALSCSV', 'qualificacao_socio')
+
+#carrega as tabelas grandes
+#tipos = ['.EMPRECSV', '.ESTABELE', '.SOCIOCSV']
 
 def sqlCriaTabela(nomeTabela, colunas):
     sql = 'CREATE TABLE ' + nomeTabela + ' ('
@@ -49,7 +65,14 @@ def sqlCriaTabela(nomeTabela, colunas):
             sql+= ',' #'\n'
     sql += ')\n'
     return sql
-
+    
+colunas_empresas = ['cnpj_basico', 'razao_social',
+           'natureza_juridica',
+           'qualificacao_responsavel',
+           'capital_social_str',
+           'porte_empresa',
+           'ente_federativo_responsavel']
+           
 colunas_estabelecimento = ['cnpj_basico','cnpj_ordem', 'cnpj_dv','matriz_filial', 
               'nome_fantasia',
               'situacao_cadastral','data_situacao_cadastral', 
@@ -70,13 +93,6 @@ colunas_estabelecimento = ['cnpj_basico','cnpj_ordem', 'cnpj_dv','matriz_filial'
               'correio_eletronico',
               'situacao_especial',
               'data_situacao_especial']    
-
-colunas_empresas = ['cnpj_basico', 'razao_social',
-           'natureza_juridica',
-           'qualificacao_responsavel',
-           'capital_social',
-           'porte_empresa',
-           'ente_federativo_responsavel']
 
 colunas_socios = [
             'cnpj_basico',
@@ -101,11 +117,11 @@ colunas_simples = [
     'data_opcao_mei',
     'data_exclusao_mei']
 
-sql = sqlCriaTabela('estabelecimento', colunas_estabelecimento)
-engine.execute(sql)
 sql = sqlCriaTabela('empresas', colunas_empresas)
 engine.execute(sql)
-sql = sqlCriaTabela('socios', colunas_socios)
+sql = sqlCriaTabela('estabelecimento', colunas_estabelecimento)
+engine.execute(sql)
+sql = sqlCriaTabela('socios_original', colunas_socios)
 engine.execute(sql)
 sql = sqlCriaTabela('simples', colunas_simples)
 engine.execute(sql)
@@ -122,13 +138,14 @@ def carregaTipo(nome_tabela, tipo, colunas):
         ddf.to_sql(nome_tabela, str(engine.url), index=None, if_exists='append', dtype=sqlalchemy.sql.sqltypes.TEXT)
         print('fim parcial...', time.asctime())
 
-carregaTipo('estabelecimento', '.ESTABELE', colunas_estabelecimento)
-carregaTipo('socios', '.SOCIOCSV', colunas_socios)
 carregaTipo('empresas', '.EMPRECSV', colunas_empresas)
+carregaTipo('estabelecimento', '.ESTABELE', colunas_estabelecimento)
+carregaTipo('socios_original', '.SOCIOCSV', colunas_socios)
 carregaTipo('simples', '.SIMPLES.CSV.*', colunas_simples)
 
+#ajusta capital social e indexa as colunas
+
 sqls = '''
-ALTER TABLE empresas RENAME COLUMN capital_social TO capital_social_str;
 ALTER TABLE empresas ADD COLUMN capital_social real;
 update  empresas
 set capital_social = cast( replace(capital_social_str,',', '.') as real);
@@ -143,8 +160,8 @@ CREATE  INDEX idx_empresas_cnpj_basico ON empresas (cnpj_basico);
 CREATE  INDEX idx_empresas_razao_social ON empresas (razao_social);
 CREATE  INDEX idx_estabelecimento_cnpj_basico ON estabelecimento (cnpj_basico);
 CREATE  INDEX idx_estabelecimento_cnpj ON estabelecimento (cnpj);
+CREATE  INDEX idx_estabelecimento_nomefantasia ON estabelecimento (nome_fantasia);
 
-ALTER TABLE socios RENAME TO socios_original;
 CREATE INDEX idx_socios_original_cnpj_basico
 ON socios_original(cnpj_basico);
 
@@ -152,7 +169,7 @@ CREATE TABLE socios AS
 SELECT te.cnpj as cnpj, ts.*
 from socios_original ts
 left join estabelecimento te on te.cnpj_basico = ts.cnpj_basico
-where te.matriz_filial="1";
+where te.matriz_filial='1';
 
 DROP TABLE IF EXISTS socios_original;
 
@@ -161,7 +178,6 @@ CREATE INDEX idx_socios_cnpj_cpf_socio ON socios(cnpj_cpf_socio);
 CREATE INDEX idx_socios_nome_socio ON socios(nome_socio);
 CREATE INDEX idx_socios_representante ON socios(representante_legal);
 CREATE INDEX idx_socios_representante_nome ON socios(nome_representante);
-
 
 CREATE INDEX idx_simples_cnpj_basico ON simples(cnpj_basico);
 
@@ -172,25 +188,12 @@ CREATE TABLE "_referencia" (
 '''
 
 print('Inicio sqls:', time.asctime())
+ktotal = len(sqls.split(';'))
 for k, sql in enumerate(sqls.split(';')):
-    print('-'*20 + f'\nexecutando parte {k}:\n', sql)
+    print('-'*20 + f'\nexecutando parte {k+1}/{ktotal}:\n', sql)
     engine.execute(sql)
     print('fim parcial...', time.asctime())
 print('fim sqls...', time.asctime())
-
-def carregaTabelaCodigo(extensaoArquivo, nomeTabela):
-    arquivo = list(glob.glob(os.path.join(pasta_saida, '*' + extensaoArquivo)))[0]
-    print('carregando tabela '+arquivo)
-    dtab = pd.read_csv(arquivo, dtype=str, sep=';', encoding='latin1', header=None, names=['codigo','descricao'])
-    dtab.to_sql(nomeTabela, engine, if_exists='replace', index=None)
-    engine.execute(f'CREATE INDEX idx_{nomeTabela} ON {nomeTabela}(codigo);')
-
-carregaTabelaCodigo('.CNAECSV','cnae')
-carregaTabelaCodigo('.MOTICSV', 'motivo')
-carregaTabelaCodigo('.MUNICCSV', 'municipio')
-carregaTabelaCodigo('.NATJUCSV', 'natureza_juridica')
-carregaTabelaCodigo('.PAISCSV', 'pais')
-carregaTabelaCodigo('.QUALSCSV', 'qualificacao_socio')
 
 #inserir na tabela referencia_
 
@@ -203,11 +206,16 @@ print('Aplicando VACUUM para diminuir o tamanho da base-------------------------
 engine.execute('VACUUM')
 print('Aplicando VACUUM-FIM-------------------------------', time.ctime())
 
-#import zipfile
-#print('zipando... ', time.ctime())
-#with zipfile.ZipFile(cam + '.7z', 'w',  zipfile.ZIP_DEFLATED) as zipf:
+# print('compactando... ', time.ctime())
+# with zipfile.ZipFile(cam + '.7z', 'w',  zipfile.ZIP_DEFLATED) as zipf:
 #     zipf.write(cam, os.path.split(cam)[1])    
-#print('zipando... FIM ', time.ctime())
+# print('compactando... FIM ', time.ctime())
+
+# import py7zr
+# print(time.ctime(), 'compactando... ')
+# with py7zr.SevenZipFile(cam + '.7z', 'w') as archive:
+#     archive.writeall(cam, os.path.split(cam)[1])
+# print(time.ctime(), 'compactando... Fim')
 
 print('-'*20)
 print(f'Foi criado o arquivo {cam}, com a base de dados no formato SQLITE.')
