@@ -14,7 +14,7 @@ Este projeto não baixa os arquivos do site da Receita.  Obtenha uma relação d
 python dados_cnpj_lista_url.py<br>
 
 Baixe todos os arquivos zipados do site da Receita e salve na pasta "dados-publicos-zip".<br>
-O download no site da Receita é lento, pode demorar várias horas (a última vez levou 8 horas)<br>Sugiro utilizar um gerenciador de downloads, como o https://portableapps.com/apps/internet/free-download-manager-portable.<br><br>
+<s>O download no site da Receita é lento, pode demorar várias horas (a última vez levou 8 horas)<br></s>Sugiro utilizar um gerenciador de downloads, como o https://portableapps.com/apps/internet/free-download-manager-portable.<br><br>
 Crie uma pasta com o nome "dados-publicos".<br>
 
 Para iniciar a conversão dos arquivos para o formato sqlite, digite em um console:<br>
