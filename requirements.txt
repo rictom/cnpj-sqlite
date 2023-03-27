@@ -1,5 +1,5 @@
 pandas
-sqlalchemy
+sqlalchemy==1.4.47
 dask
 beautifulsoup4
 requests
