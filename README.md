@@ -11,14 +11,14 @@ Bibliotecas pandas, dask e sqlalchemy.<br>
 
 ## Utilizando o script:
 Este projeto não baixa os arquivos do site da Receita.  Obtenha uma relação dos arquivos disponíveis pelo comando no Anaconda prompt (disponível no menu do Windows):<br>
-python dados_cnpj_lista_url.py<br>
+<b>python dados_cnpj_lista_url.py</b><br>
 
 Baixe todos os arquivos zipados do site da Receita e salve na pasta "dados-publicos-zip".<br>
 <s>O download no site da Receita é lento, pode demorar várias horas (a última vez levou 8 horas)<br></s>Sugiro utilizar um gerenciador de downloads, como o https://portableapps.com/apps/internet/free-download-manager-portable.<br><br>
 Crie uma pasta com o nome "dados-publicos".<br>
 
 Para iniciar a conversão dos arquivos para o formato sqlite, digite em um console do Anaconda prompt:<br>
-python dados_cnpj_para_sqlite.py<br>
+<b>python dados_cnpj_para_sqlite.py</b><br>
 
 O processamento leva cerca de 2hs em um notebook i7 de oitava geração.
 
@@ -26,6 +26,10 @@ Ao final, será gerado um arquivo cnpj.db, no formato sqlite, com cerca de 30GB,
 
 O arquivo cnpj.db poderá ser usado no meu projeto rede-cnpj (https://github.com/rictom/rede-cnpj), que permite visualização gráfica de relacionamentos entre empresas e sócios. Este projeto está rodando online em https://www.redecnpj.com.br.<br>
 O projeto https://github.com/rictom/cnpj_consulta também utiliza o arquivo cnpj.db para visualizar os dados de cnpj em formato de tabela.<br>
+
+## Problema recorrente:
+Se por acaso ocorrer um erro do tipo "Engine object has no attribute execute", altere a versão da biblioteca sqlalchemy pelo comando:
+<b>pip install sqlalchemy==1.4.47</b><br>
 
 ## Arquivo sqlite com a base CNPJ:<a id="arquivo_sqlite"></a>
 O arquivo final poderá ser aberto no  [DBBrowser](https://sqlitebrowser.org/) for SQLITE.<br>
