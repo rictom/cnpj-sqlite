@@ -10,12 +10,14 @@ Bibliotecas pandas, dask e sqlalchemy.<br>
 55GB de disco livre, 30GB para a base em sqlite e 25GB para os arquivos do site da Receita zip ou descompactados. Os 25GB poderão ser liberados depois de rodar o script.<br>
 
 ## Utilizando o script:
-Este projeto não baixa os arquivos do site da Receita.  Obtenha uma relação dos arquivos disponíveis pelo comando no Anaconda prompt (disponível no menu do Windows):<br>
-<b>python dados_cnpj_lista_url.py</b><br>
+Se desejar apenas uma relação dos arquivos disponíveis pelo comando no Anaconda prompt (disponível no menu do Windows) na pasta deste projeto:<br>
+<b>python dados_cnpj_lista_url.py</b><br><br>
+Baixe os arquivos do site da Receita pelo comando no Anaconda prompt na pasta deste projeto<br>
+<b>python dados_cnpj_baixa.py</b><br>
+Isto irá baixar os arquivos zipados do site da Receita na pasta "dados-publicos-zip".<br><br>
 
-Baixe todos os arquivos zipados do site da Receita e salve na pasta "dados-publicos-zip".<br>
-<s>O download no site da Receita é lento, pode demorar várias horas (a última vez levou 8 horas)<br></s>Sugiro utilizar um gerenciador de downloads, como o https://portableapps.com/apps/internet/free-download-manager-portable.<br><br>
-Crie uma pasta com o nome "dados-publicos".<br>
+<s>O download no site da Receita é lento, pode demorar várias horas (a última vez levou 8 horas)<br></s>Se o download estiver muito lento, outra forma de baixar os arquivos é usar um gerenciador de downloads, como o https://portableapps.com/apps/internet/free-download-manager-portable.<br><br>
+Crie uma pasta com o nome <b>"dados-publicos"</b>. Se houver arquivos antigos nesta pasta, apague ou mova-os de lugar.<br>
 
 Para iniciar a conversão dos arquivos para o formato sqlite, digite em um console do Anaconda prompt:<br>
 <b>python dados_cnpj_para_sqlite.py</b><br>
