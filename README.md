@@ -5,8 +5,9 @@ Script em python para converter os arquivos de dados públicos de CNPJs para o f
 Os arquivos csv zipados com os dados de CNPJs estão disponíveis em https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj ou https://dadosabertos.rfb.gov.br/CNPJ/ (http://200.152.38.155/CNPJ/).<br><br>
 
 ## Pré-requisitos:
-Python 3.8 ou posterior;<br>
-Bibliotecas pandas, dask e sqlalchemy.<br>
+Python 3.9 ou posterior;<br>
+Bibliotecas pandas, dask, sqlalchemy, wget.<br><br>
+Recomenda-se instalar o [Anaconda](https://www.anaconda.com/download#downloads), que já configura o Python e ferramentas de programação;<br>
 Verifique se você tem mais de <b>60GB de disco livre</b>, cerca de 30GB para a base em sqlite e 25GB para os arquivos do site da Receita zip ou descompactados. Os 25GB poderão ser liberados depois de rodar o script.<br>
 Baixe o código do projeto pelo botão "Download ZIP" no menu "Code": <br>
 ![image](https://github.com/rictom/cnpj-sqlite/assets/71139693/e35ca678-7c52-45cc-ad61-32bfb4490fb9)
