@@ -7,10 +7,25 @@ Os arquivos csv zipados com os dados de CNPJs estão disponíveis em https://dad
 ## Pré-requisitos:
 Python 3.8 ou posterior;<br>
 Bibliotecas pandas, dask e sqlalchemy.<br>
-55GB de disco livre, 30GB para a base em sqlite e 25GB para os arquivos do site da Receita zip ou descompactados. Os 25GB poderão ser liberados depois de rodar o script.<br>
+Verifique se você tem mais de <b>60GB de disco livre</b>, cerca de 30GB para a base em sqlite e 25GB para os arquivos do site da Receita zip ou descompactados. Os 25GB poderão ser liberados depois de rodar o script.<br>
+Baixe o código do projeto pelo botão "Download ZIP" no menu "Code": <br>
+![image](https://github.com/rictom/cnpj-sqlite/assets/71139693/e35ca678-7c52-45cc-ad61-32bfb4490fb9)
+<br>
+Isso fará baixar um arquivo zip com o código deste repositório. Descompacte em alguma pasta, por exemplo, na raiz do disco C:<br>
+
+## Usando o Anaconda prompt:
+<b>Atenção:</b> Você poderia abrir um console do DOS pela lupa do Windows e digitar "cmd", ou pelo menu contextual, mas assim o console não iria estar no "ambiente" correto e as instruções para rodar os scripts não iriam funcionar.<br><br>
+Se você instalou o Anaconda no Windows, todas as operações de linha de comando devem ser no "ambiente" correto utilizando o Anaconda prompt.<br>
+![image](https://github.com/rictom/cnpj-sqlite/assets/71139693/c13faf05-36ff-436c-bd09-8cdb46f835ad)
+
+Quando se está em um ambiente padrão do Anaconda prompt, o console começa com (base) C:\Users\<apelido do usuário>\:<br>
+![image](https://github.com/rictom/cnpj-sqlite/assets/71139693/3a5b0bb6-42f1-4fa2-9916-02484ffefde5)
 
 ## Utilizando o script:
-Se desejar apenas uma relação dos arquivos disponíveis pelo comando no Anaconda prompt (disponível no menu do Windows) na pasta deste projeto:<br>
+Use o comando <b>cd</b> para "navegar" o prompt até a pasta com o código deste projeto, por exemplo, <b>cd C:\cnpj-sqlite-main</b>. Isto dependerá do lugar que você descompactou a cópia deste projeto no seu HD.<br><br>
+Instale as bibliotecas necessárias neste projeto usando o comando no Anaconda prompt:<br>
+<b>pip install -r requirements.txt</b><br><br>
+Se desejar apenas uma relação dos arquivos disponíveis no site da Receita Federal, use o seguinte comando no Anaconda prompt, na pasta deste projeto:<br>
 <b>python dados_cnpj_lista_url.py</b><br><br>
 Baixe os arquivos do site da Receita pelo comando no Anaconda prompt na pasta deste projeto<br>
 <b>python dados_cnpj_baixa.py</b><br>
