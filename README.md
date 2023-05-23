@@ -18,7 +18,7 @@ Isso fará baixar um arquivo zip com o código deste repositório. Descompacte e
 Se você instalou o Anaconda no Windows, todas as operações de linha de comando devem ser no "ambiente" correto utilizando o Anaconda prompt.<br>
 ![image](https://github.com/rictom/cnpj-sqlite/assets/71139693/c13faf05-36ff-436c-bd09-8cdb46f835ad)
 
-Quando se está em um ambiente padrão do Anaconda prompt, o console começa com (base) C:\Users\<apelido do usuário>\:<br>
+Quando se está em um ambiente padrão do Anaconda prompt, o console começa com (base) C:\Users\\<apelido do usuário>\:<br>
 ![image](https://github.com/rictom/cnpj-sqlite/assets/71139693/3a5b0bb6-42f1-4fa2-9916-02484ffefde5)
 
 ## Utilizando o script:
