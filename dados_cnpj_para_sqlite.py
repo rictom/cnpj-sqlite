@@ -190,15 +190,15 @@ WITH RECURSIVE split(cnpj, cnae_secundario, rest) AS (
    substr(rest, instr(rest, ',')+1)
    FROM split WHERE rest!=''
 )
-SELECT cnpj, cnae_secundario as cnae
+SELECT cnpj, cnae_secundario as cnae, "secundario" as tipo_cnae
 FROM split
 WHERE cnae_secundario!=''
 UNION ALL 
-SELECT e.cnpj, e.cnae_fiscal from estabelecimento e;
+SELECT e.cnpj, e.cnae_fiscal, "primario" as tipo_cnae from estabelecimento e;
 
 CREATE INDEX idx_cnaes_estabelecimentos_cnpj ON cnaes_estabelecimentos(cnpj);
 CREATE INDEX idx_cnaes_estabelecimentos_cnae ON cnaes_estabelecimentos(cnae);
-
+CREATE INDEX idx_cnaes_estabelecimentos_tipo_cnae ON cnaes_estabelecimentos(tipo_cnae);
 
 CREATE TABLE "_referencia" (
 	"referencia"	TEXT,
