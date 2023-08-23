@@ -19,7 +19,7 @@ A utilização da biblioteca DASK tem desempenho melhor do que o uso de PANDAS (
 import pandas as pd, sqlalchemy, glob, time, dask.dataframe as dd
 import os, sys, zipfile
 
-dataReferencia = '22/08/2022' #input('Data de referência da base dd/mm/aaaa: ')
+dataReferencia = 'xx/xx/2022' #input('Data de referência da base dd/mm/aaaa: ')
 pasta_compactados = r"dados-publicos-zip" #local dos arquivos zipados da Receita
 pasta_saida = r"dados-publicos" #esta pasta deve estar vazia. 
 
