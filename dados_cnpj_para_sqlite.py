@@ -19,7 +19,7 @@ A utilização da biblioteca DASK tem desempenho melhor do que o uso de PANDAS (
 import pandas as pd, sqlalchemy, glob, time, dask.dataframe as dd
 import os, sys, zipfile
 
-dataReferencia = 'xx/xx/2022' #input('Data de referência da base dd/mm/aaaa: ')
+dataReferencia = '22/08/2022' #input('Data de referência da base dd/mm/aaaa: ')
 pasta_compactados = r"dados-publicos-zip" #local dos arquivos zipados da Receita
 pasta_saida = r"dados-publicos" #esta pasta deve estar vazia. 
 
@@ -180,6 +180,25 @@ CREATE INDEX idx_socios_representante ON socios(representante_legal);
 CREATE INDEX idx_socios_representante_nome ON socios(nome_representante);
 
 CREATE INDEX idx_simples_cnpj_basico ON simples(cnpj_basico);
+
+CREATE TABLE cnaes_estabelecimentos AS
+WITH RECURSIVE split(cnpj, cnae_secundario, rest) AS (
+   SELECT e.cnpj, '', e.cnae_fiscal_secundaria||',' FROM estabelecimento e
+   UNION ALL SELECT
+   cnpj,
+   substr(rest, 0, instr(rest, ',')),
+   substr(rest, instr(rest, ',')+1)
+   FROM split WHERE rest!=''
+)
+SELECT cnpj, cnae_secundario as cnae
+FROM split
+WHERE cnae_secundario!=''
+UNION ALL 
+SELECT e.cnpj, e.cnae_fiscal from estabelecimento e;
+
+CREATE INDEX idx_cnaes_estabelecimentos_cnpj ON cnaes_estabelecimentos(cnpj);
+CREATE INDEX idx_cnaes_estabelecimentos_cnae ON cnaes_estabelecimentos(cnae);
+
 
 CREATE TABLE "_referencia" (
 	"referencia"	TEXT,
