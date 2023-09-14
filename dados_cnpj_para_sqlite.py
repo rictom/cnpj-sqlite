@@ -202,9 +202,9 @@ qtde_cnpjs = engine.execute('select count(*) as contagem from estabelecimento;')
 engine.execute(f"insert into _referencia (referencia, valor) values ('CNPJ', '{dataReferencia}')")
 engine.execute(f"insert into _referencia (referencia, valor) values ('cnpj_qtde', '{qtde_cnpjs}')")
 
-print('Aplicando VACUUM para diminuir o tamanho da base--------------------------------', time.ctime())
-engine.execute('VACUUM')
-print('Aplicando VACUUM-FIM-------------------------------', time.ctime())
+#print('Aplicando VACUUM para diminuir o tamanho da base--------------------------------', time.ctime())
+#engine.execute('VACUUM')
+#print('Aplicando VACUUM-FIM-------------------------------', time.ctime())
 
 # print('compactando... ', time.ctime())
 # with zipfile.ZipFile(cam + '.7z', 'w',  zipfile.ZIP_DEFLATED) as zipf:
