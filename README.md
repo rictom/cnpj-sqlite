@@ -38,7 +38,7 @@ Crie uma pasta com o nome <b>"dados-publicos"</b>. Se houver arquivos antigos ne
 Para iniciar a conversão dos arquivos para o formato sqlite, digite em um console do Anaconda prompt:<br>
 <b>python dados_cnpj_para_sqlite.py</b><br>
 
-O processamento leva cerca de 2hs em um notebook i7 de oitava geração.
+O processamento leva cerca de 2hs em um notebook i7 de oitava geração com SSD.
 
 Ao final, será gerado um arquivo cnpj.db, no formato sqlite, com cerca de 30GB, que poderá ser aberto no DB Browser for SQLITE (https://sqlitebrowser.org/).<br>
 
