@@ -45,9 +45,9 @@ Ao final, será gerado um arquivo cnpj.db, no formato sqlite, com cerca de 30GB,
 O arquivo cnpj.db poderá ser usado no meu projeto rede-cnpj (https://github.com/rictom/rede-cnpj), que permite visualização gráfica de relacionamentos entre empresas e sócios. Este projeto está rodando online em https://www.redecnpj.com.br.<br>
 O projeto https://github.com/rictom/cnpj_consulta também utiliza o arquivo cnpj.db para visualizar os dados de cnpj em formato de tabela.<br>
 
-## Problema recorrente:
+<s>## Problema recorrente:
 Se por acaso ocorrer um erro do tipo "Engine object has no attribute execute", altere a versão da biblioteca sqlalchemy pelo comando:
-<b>pip install sqlalchemy==1.4.47</b><br>
+<b>pip install sqlalchemy==1.4.47</b><br></s>
 
 ## Arquivo sqlite com a base CNPJ:<a id="arquivo_sqlite"></a>
 O arquivo final poderá ser aberto no  [DBBrowser](https://sqlitebrowser.org/) for SQLITE.<br>
@@ -59,6 +59,9 @@ Lista das tabelas do arquivo cnpj.db no DBBrowser.
 O script em https://github.com/rictom/cnpj-mysql faz o carregamento dos dados para o banco de dados em MYSQL.<br>
 
 ## Histórico de versões
+versão 0.5 (janeiro/2024)
+- utilizando sqlite3 ao invés de sqlalchemy para gerar conexão, de forma que não há mais dependência de sqlalchemy<2.x
+  
 versão 0.4 (setembro/2022)
 - inclusão de índice na coluna "nome fantasia" da tabela estabelecimento.
 
