@@ -16,10 +16,11 @@ Os arquivos descompactados e a base em sqlite serão gerados na pasta definida n
 A utilização da biblioteca DASK tem desempenho melhor do que o uso de PANDAS (quase 10x mais rápido).
 """
 
-import pandas as pd, sqlalchemy, glob, time, dask.dataframe as dd
+import pandas as pd, sqlite3, sqlalchemy
+import glob, time, dask.dataframe as dd
 import os, sys, zipfile
 
-dataReferencia = 'xx/xx/2022' #input('Data de referência da base dd/mm/aaaa: ')
+dataReferencia = 'xx/xx/2024' #input('Data de referência da base dd/mm/aaaa: ')
 pasta_compactados = r"dados-publicos-zip" #local dos arquivos zipados da Receita
 pasta_saida = r"dados-publicos" #esta pasta deve estar vazia. 
 
@@ -30,7 +31,8 @@ if os.path.exists(cam):
 
 print('Início:', time.asctime())
 
-engine = sqlalchemy.create_engine(f'sqlite:///{cam}')
+engine = sqlite3.connect(cam)
+engine_url = f'sqlite:///{cam}'
 
 arquivos_zip = list(glob.glob(os.path.join(pasta_compactados,r'*.zip')))
 
@@ -135,7 +137,7 @@ def carregaTipo(nome_tabela, tipo, colunas):
         ddf = dd.read_csv(arq, sep=';', header=None, names=colunas, encoding='latin1', dtype=str, na_filter=None)
         #dask possibilita usar curinga no nome de arquivo, por ex: 
         #ddf = dd.read_csv(pasta_saida+r'\*' + tipo, sep=';', header=None, names=colunas ...
-        ddf.to_sql(nome_tabela, str(engine.url), index=None, if_exists='append', dtype=sqlalchemy.sql.sqltypes.TEXT)
+        ddf.to_sql(nome_tabela, engine_url, index=None, if_exists='append', dtype=sqlalchemy.sql.sqltypes.TEXT)
         print('fim parcial...', time.asctime())
 
 carregaTipo('empresas', '.EMPRECSV', colunas_empresas)
@@ -216,6 +218,9 @@ engine.execute(f"insert into _referencia (referencia, valor) values ('cnpj_qtde'
 # with py7zr.SevenZipFile(cam + '.7z', 'w') as archive:
 #     archive.writeall(cam, os.path.split(cam)[1])
 # print(time.ctime(), 'compactando... Fim')
+
+engine.commit()
+engine.close()
 
 print('-'*20)
 print(f'Foi criado o arquivo {cam}, com a base de dados no formato SQLITE.')
