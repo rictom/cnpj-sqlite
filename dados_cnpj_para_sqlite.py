@@ -219,13 +219,12 @@ engine.execute(f"insert into _referencia (referencia, valor) values ('cnpj_qtde'
 #     archive.writeall(cam, os.path.split(cam)[1])
 # print(time.ctime(), 'compactando... Fim')
 
-engine.commit()
-engine.close()
-
 print('-'*20)
 print(f'Foi criado o arquivo {cam}, com a base de dados no formato SQLITE.')
 print('Qtde de empresas (matrizes):', engine.execute('SELECT COUNT(*) FROM empresas').fetchone()[0])
 print('Qtde de estabelecimentos (matrizes e fiiais):', engine.execute('SELECT COUNT(*) FROM estabelecimento').fetchone()[0])
 print('Qtde de sócios:', engine.execute('SELECT COUNT(*) FROM socios').fetchone()[0])
 
+engine.commit()
+engine.close()
 print('FIM!!!', time.asctime())
