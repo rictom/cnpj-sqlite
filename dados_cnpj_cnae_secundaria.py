@@ -14,21 +14,22 @@ a) uma em pandas que carrega toda a coluna cnae_secundária na memória, por iss
 computador. Quando executei chegou a ocupar 10GB. Use bUsaPandas = True
 b) usando DASK, salvando primeiro os cnaes_secundários em um arquivo temporário e depois carregando
 na base sqlite. Teoricamente isso pode funcionar com menos memória. Use bUsaPandas = False
-O desempenho das rotinas é semelhante, mas leva cerca de 1 hora em um notebook com i7 8a geração.
+
 '''
 
 #%%
-import pandas as pd, sqlalchemy, glob, time
-import os, sys
+import pandas as pd, os, sqlalchemy
+import time, sqlite3
 
 pasta_saida = r"dados-publicos"
 cam = os.path.join(pasta_saida, 'cnpj.db')
-bUsaPandas = True
+bUsaPandas = True 
 
-#%% usando pandas, funciona, leva 1 hora. Ocupa bastante memória RAM, mais de 10GB
+#%% usando pandas, funciona, levou 18 minutos. Ocupa bastante memória RAM, mais de 10GB
 if bUsaPandas:
     print('inicio...', time.asctime())
-    conn = sqlalchemy.create_engine(f'sqlite:///{cam}')
+    #conn = sqlalchemy.create_engine(f'sqlite:///{cam}')
+    conn = sqlite3.connect(cam)
     conn.execute('drop table if exists cnae_secundaria')
     
     df = pd.read_sql('Select cnpj, cnae_fiscal_secundaria from estabelecimento', conn)
@@ -37,8 +38,8 @@ if bUsaPandas:
     df['cnae_fiscal_secundaria'] = df['cnae_fiscal_secundaria'].str.split(',')
     
     de = df.explode('cnae_fiscal_secundaria')
-    de.to_sql('cnae_secundaria', conn, index=None, if_exists='append',method='multi',
-              chunksize=1000, dtype=sqlalchemy.sql.sqltypes.TEXT)
+    de.to_sql('cnae_secundaria', conn, index=None, if_exists='append', method='multi',
+              chunksize=100000) #, dtype=str) #sqlalchemy.sql.sqltypes.TEXT)
     print('fim...', time.asctime())
 
 # #%% fazendo em pedaços, dá database locked
@@ -61,22 +62,22 @@ if bUsaPandas:
 # print('fim...', time.asctime())
 
 #%% usando dask 
-#para a tabela inteirá dá database locked, tentando salvar primeiro em parquet, parece OK. 
+#para a tabela inteiaá dá database locked, tentando salvar primeiro em parquet, parece OK. 
 #leva quase 1 hora
-import sqlalchemy, glob, time
-import os, sys
+
 if not bUsaPandas:
     import dask.dataframe as dd
     
     print('inicio...', time.asctime())
-    conn = sqlalchemy.create_engine(f'sqlite:///{cam}')
+    #conn = sqlalchemy.create_engine(f'sqlite:///{cam}')
+    conn = sqlite3.connect(cam)
     conn.execute('drop table if exists tmp_cnae')
     conn.execute('drop table if exists cnae_secundaria')
     conn.execute('''create table tmp_cnae as select cnpj, cast(cnpj as integer) as cnpj_int,  
                   cnae_fiscal_secundaria from estabelecimento''')
-    
+    conn.commit()
     #conn.execute('''ALTER TABLE tmp_cnae ADD COLUMN iq INTEGER ''')
-    conn = None
+    
     ddf = dd.read_sql_table('tmp_cnae', f'sqlite:///{cam}', index_col='cnpj_int')
     ddf = ddf[ ddf['cnae_fiscal_secundaria']!='']
     ddf['cnae_fiscal_secundaria'] = ddf['cnae_fiscal_secundaria'].str.split(',')
@@ -85,7 +86,9 @@ if not bUsaPandas:
     ddf = dd.read_parquet('tmp_cnae.pq')
     #ddf.explode('cnae_fiscal_secundaria').to_sql('tmp_cnae_secundaria', f'sqlite:///{cam}', index=None, if_exists='replace') #, #method='multi', chunksize=1000, 
                 #dtype=sqlalchemy.sql.sqltypes.TEXT)
-    ddf.to_sql('cnae_fiscal_secundaria', f'sqlite:///{cam}', index=None,  if_exists='replace') #, dtype=sqlalchemy.sql.sqltypes.TEXT)
+    ddf.to_sql('cnae_secundaria', f'sqlite:///{cam}', index=None,  if_exists='replace') #, dtype=sqlalchemy.sql.sqltypes.TEXT)
     conn.execute('drop table if exists tmp_cnae')
+    conn.commit()
+    conn = None
     print('fim...', time.asctime())
     #dde.compute()
