@@ -1,6 +1,7 @@
 pandas
 sqlalchemy
 dask
+dask_expr
 beautifulsoup4
 requests
 wget
