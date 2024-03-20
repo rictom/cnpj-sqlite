@@ -49,6 +49,9 @@ O projeto https://github.com/rictom/cnpj_consulta também utiliza o arquivo cnpj
 Se por acaso ocorrer um erro do tipo "Engine object has no attribute execute", altere a versão da biblioteca sqlalchemy pelo comando:
 <b>pip install sqlalchemy==1.4.47</b><br></s>
 
+## Versão aplicativo Windows 10 do script:
+Se você não tem familiaridade com python, pode utilizar o aplicativo em https://www.redecnpj.com.br/rede/pag/aplicativo.html#rede_programa_baixar que serve para baixar a base do site de dados abertos da Receita Federal e faz a conversão para sqlite. Baixe e rode APENAS as partes 1 e 2 do programa. Leia o manual antes de executar.
+
 ## Arquivo sqlite com a base CNPJ:<a id="arquivo_sqlite"></a>
 O arquivo final poderá ser aberto no  [DBBrowser](https://sqlitebrowser.org/) for SQLITE.<br>
 
