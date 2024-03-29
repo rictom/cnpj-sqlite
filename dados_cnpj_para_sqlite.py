@@ -29,17 +29,19 @@ if os.path.exists(cam):
     input(f'O arquivo {cam} já existe. Apague-o primeiro e rode este script novamente.')
     sys.exit()
 
-print('Início:', time.asctime())
-
-engine = sqlite3.connect(cam)
-engine_url = f'sqlite:///{cam}'
-
 arquivos_zip = list(glob.glob(os.path.join(pasta_compactados,r'*.zip')))
+if len(arquivos_zip) != 37:
+    input(f'A pasta {pasta_compactados} não contém 37 arquivos zip. Baixe os arquivos primeiro e tente novamente.')
+    sys.exit()
 
+print('Início:', time.asctime())
 for arq in arquivos_zip:
     print(time.asctime(), 'descompactando ' + arq)
     with zipfile.ZipFile(arq, 'r') as zip_ref:
         zip_ref.extractall(pasta_saida)
+
+engine = sqlite3.connect(cam)
+engine_url = f'sqlite:///{cam}'
 
 #carrega tabelas pequenas e indexa
 def carregaTabelaCodigo(extensaoArquivo, nomeTabela):
