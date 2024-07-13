@@ -62,6 +62,10 @@ Lista das tabelas do arquivo cnpj.db no DBBrowser.
 O script em https://github.com/rictom/cnpj-mysql faz o carregamento dos dados para o banco de dados em MYSQL.<br>
 
 ## Histórico de versões
+
+versão 0.6 (julho/2024)
+- biblioteca parfive para download de arquivos em paralelo no script dados_cnpj_baixa.py
+
 versão 0.5 (janeiro/2024)
 - utilizando sqlite3 ao invés de sqlalchemy para gerar conexão, de forma que não há mais dependência de sqlalchemy<2.x
   
