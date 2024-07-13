@@ -6,11 +6,11 @@ lista relação de arquivos na página de dados públicos da receita federal
 e faz o download
 """
 from bs4 import BeautifulSoup
-import requests, wget, os, sys, time, glob
+import requests, wget, os, sys, time, glob, parfive
 
-url = 'https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/consultas/dados-publicos-cnpj'
+#url = 'https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/consultas/dados-publicos-cnpj'
+#url = 'https://dadosabertos.rfb.gov.br/CNPJ/'
 url = 'http://200.152.38.155/CNPJ/'
-
 
 pasta_compactados = r"dados-publicos-zip" #local dos arquivos zipados da Receita
 
@@ -39,21 +39,29 @@ resp = input(f'Deseja baixar os arquivos acima para a pasta {pasta_compactados} 
 if resp.lower()!='y' and resp.lower()!='s':
     sys.exit()
     
-def bar_progress(current, total, width=80):
-    if total>=2**20:
-        tbytes='Megabytes'
-        unidade = 2**20
-    else:
-        tbytes='kbytes'
-        unidade = 2**10
-    progress_message = f"Baixando: %d%% [%d / %d] {tbytes}" % (current / total * 100, current//unidade, total//unidade)
-    # Don't use print() as it will print in new line every time.
-    sys.stdout.write("\r" + progress_message)
-    sys.stdout.flush()
-  
-for k, url in enumerate(lista):
-    print('\n' + time.asctime() + f' - item {k}: ' + url)
-    wget.download(url, out=os.path.join(pasta_compactados, os.path.split(url)[1]), bar=bar_progress)
+print(time.asctime(), 'Início do Download dos arquivos...')
+
+if True: #baixa usando parfive, download em paralelo
+    downloader = parfive.Downloader()
+    for url in lista:
+        downloader.enqueue_file(url, path=pasta_compactados, filename=os.path.split(url)[1])
+    downloader.download()
+else: #baixar sequencial, rotina antiga
+    def bar_progress(current, total, width=80):
+        if total>=2**20:
+            tbytes='Megabytes'
+            unidade = 2**20
+        else:
+            tbytes='kbytes'
+            unidade = 2**10
+        progress_message = f"Baixando: %d%% [%d / %d] {tbytes}" % (current / total * 100, current//unidade, total//unidade)
+        # Don't use print() as it will print in new line every time.
+        sys.stdout.write("\r" + progress_message)
+        sys.stdout.flush()
+      
+    for k, url in enumerate(lista):
+        print('\n' + time.asctime() + f' - item {k}: ' + url)
+        wget.download(url, out=os.path.join(pasta_compactados, os.path.split(url)[1]), bar=bar_progress)
     
 print('\n\n'+ time.asctime() + f' Finalizou!!! Baixou {len(lista)} arquivos.')
 
