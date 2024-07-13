@@ -4,3 +4,4 @@ dask
 beautifulsoup4
 requests
 wget
+parfive
