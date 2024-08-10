@@ -41,6 +41,10 @@ for arq in arquivos_zip:
     with zipfile.ZipFile(arq, 'r') as zip_ref:
         zip_ref.extractall(pasta_saida)
 
+dataReferenciaAux = list(glob.glob(os.path.join(pasta_saida, '*.EMPRECSV')))[0].split('.')[2] #formato DAMMDD, vai ser usado no final para inserir na tabela  _ref
+if len(dataReferenciaAux)==len('D30610') and dataReferenciaAux.startswith('D'):
+    dataReferencia = dataReferenciaAux[4:6] + '/' + dataReferenciaAux[2:4] + '/202' + dataReferenciaAux[1]
+	
 engine = sqlite3.connect(cam)
 engine_url = f'sqlite:///{cam}'
 
