@@ -30,10 +30,12 @@ if os.path.exists(cam):
     sys.exit()
 
 arquivos_zip = list(glob.glob(os.path.join(pasta_compactados,r'*.zip')))
+
 if len(arquivos_zip) != 37:
-    input(f'A pasta {pasta_compactados} não contém 37 arquivos zip. Baixe os arquivos primeiro e tente novamente.')
-    print('Para baixar os arquivos, use um gerenciador de downloads ou use o comando python dados_cnpj_baixa.py')	
-    sys.exit()
+    r = input(f'A pasta {pasta_compactados} deveria conter 37 arquivos zip, mas tem {len(arquivos_zip)}. É recomendável prosseguir apenas com todos os arquivos, senão a base ficará incompleta. Deseja prosseguir assim mesmo? (y/n) ')    
+    if not r or r.lower()!='y':
+        print('Para baixar os arquivos, use um gerenciador de downloads ou use o comando python dados_cnpj_baixa.py')	
+        sys.exit()
 
 print('Início:', time.asctime())
 for arq in arquivos_zip:
