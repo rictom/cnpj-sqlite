@@ -1,44 +1,60 @@
 # -*- coding: utf-8 -*-
 """
-Spyder Editor
 
 lista relação de arquivos na página de dados públicos da receita federal
 e faz o download
+https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/consultas/dados-publicos-cnpj
+https://dadosabertos.rfb.gov.br/CNPJ/
+http://200.152.38.155/CNPJ/
 """
 from bs4 import BeautifulSoup
 import requests, wget, os, sys, time, glob, parfive
 
-#url = 'https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/consultas/dados-publicos-cnpj'
-#url = 'https://dadosabertos.rfb.gov.br/CNPJ/'
-url = 'http://200.152.38.155/CNPJ/'
+#url = 'http://200.152.38.155/CNPJ/dados_abertos_cnpj/2024-08/' #padrão a partir de agosto/2024
+#url_dados_abertos = 'https://dadosabertos.rfb.gov.br/CNPJ/dados_abertos_cnpj/'
+url_dados_abertos = 'http://200.152.38.155/CNPJ/dados_abertos_cnpj/'
 
 pasta_compactados = r"dados-publicos-zip" #local dos arquivos zipados da Receita
 
-if len(glob.glob(os.path.join(pasta_compactados,'*.zip'))):
-    print(f'Há arquivos zip na pasta {pasta_compactados}. Apague ou mova esses arquivos zip e tente novamente')
-    sys.exit()
-       
-page = requests.get(url)    
-data = page.text
-soup = BeautifulSoup(data)
+print(time.asctime(), f'Início de {sys.argv[0]}:')
+
+soup_pagina_dados_abertos = BeautifulSoup(requests.get(url_dados_abertos).text)
+try:
+    ultima_referencia = sorted([link.get('href') for link in soup_pagina_dados_abertos.find_all('a') if link.get('href').startswith('20')])[-1]
+except:
+    print('Não encontrou pastas em ' + url_dados_abertos)
+    r = input('Pressione Enter.')
+    sys.exit(1)
+
+
+url = url_dados_abertos + ultima_referencia
+# page = requests.get(url)    
+# data = page.text
+soup = BeautifulSoup(requests.get(url).text)
 lista = []
 print('Relação de Arquivos em ' + url)
 for link in soup.find_all('a'):
     if str(link.get('href')).endswith('.zip'): 
         cam = link.get('href')
-        # if cam.startswith('http://http'):
-        #     cam = 'http://' + cam[len('http://http//'):] 
         if not cam.startswith('http'):
             print(url+cam)
             lista.append(url+cam)
         else:
             print(cam)
             lista.append(cam)
-            
-resp = input(f'Deseja baixar os arquivos acima para a pasta {pasta_compactados} (y/n)?')
-if resp.lower()!='y' and resp.lower()!='s':
-    sys.exit()
-    
+
+if __name__ == '__main__':        
+    resp = input(f'Deseja baixar os arquivos acima para a pasta {pasta_compactados} (y/n)?')
+    if resp.lower()!='y' and resp.lower()!='s':
+        sys.exit()
+        
+def requisitos():
+    if len(glob.glob(os.path.join(pasta_compactados,'*.zip'))):
+        print(f'Há arquivos zip na pasta {pasta_compactados}. Apague ou mova esses arquivos zip e tente novamente')
+        input('Pressione Enter')
+        sys.exit(1)
+requisitos()
+
 print(time.asctime(), 'Início do Download dos arquivos...')
 
 if True: #baixa usando parfive, download em paralelo
@@ -62,10 +78,14 @@ else: #baixar sequencial, rotina antiga
     for k, url in enumerate(lista):
         print('\n' + time.asctime() + f' - item {k}: ' + url)
         wget.download(url, out=os.path.join(pasta_compactados, os.path.split(url)[1]), bar=bar_progress)
-    
-print('\n\n'+ time.asctime() + f' Finalizou!!! Baixou {len(lista)} arquivos.')
 
-#lista dos arquivos
+        
+print('\n\n'+ time.asctime(), f' Finalizou {sys.argv[0]}!!!')
+print(f"Baixou {len(glob.glob(os.path.join(pasta_compactados,'*.zip')))} arquivos.")
+if __name__ == '__main__':
+    input('Pressione Enter')
+
+#lista dos arquivos (até julho/2024)
 '''
 http://200.152.38.155/CNPJ/Cnaes.zip
 http://200.152.38.155/CNPJ/Empresas0.zip
