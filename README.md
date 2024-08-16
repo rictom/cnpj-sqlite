@@ -26,7 +26,7 @@ Quando se está em um ambiente padrão do Anaconda prompt, o console começa com
 Use o comando <b>cd</b> para "navegar" o prompt até a pasta com o código deste projeto, por exemplo, <b>cd C:\cnpj-sqlite-main</b>. Isto dependerá do lugar que você descompactou a cópia deste projeto no seu HD.<br><br>
 Instale as bibliotecas necessárias neste projeto usando o comando no Anaconda prompt:<br>
 <b>pip install -r requirements.txt</b><br><br>
-Se desejar apenas uma relação dos arquivos disponíveis no site da Receita Federal ou baixar os arquivos do site da Receita pelo comando no Anaconda prompt na pasta deste projeto<br>
+Se desejar apenas uma relação dos arquivos disponíveis no site da Receita Federal ou baixar os arquivos, faça o seguinte comando no Anaconda prompt na pasta deste projeto:<br>
 <b>python dados_cnpj_baixa.py</b><br>
 Isto irá baixar os arquivos zipados do site da Receita na pasta "dados-publicos-zip".<br><br>
 
