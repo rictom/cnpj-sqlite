@@ -26,14 +26,11 @@ Quando se está em um ambiente padrão do Anaconda prompt, o console começa com
 Use o comando <b>cd</b> para "navegar" o prompt até a pasta com o código deste projeto, por exemplo, <b>cd C:\cnpj-sqlite-main</b>. Isto dependerá do lugar que você descompactou a cópia deste projeto no seu HD.<br><br>
 Instale as bibliotecas necessárias neste projeto usando o comando no Anaconda prompt:<br>
 <b>pip install -r requirements.txt</b><br><br>
-Se desejar apenas uma relação dos arquivos disponíveis no site da Receita Federal, use o seguinte comando no Anaconda prompt, na pasta deste projeto:<br>
-<b>python dados_cnpj_lista_url.py</b><br><br>
-Baixe os arquivos do site da Receita pelo comando no Anaconda prompt na pasta deste projeto<br>
+Se desejar apenas uma relação dos arquivos disponíveis no site da Receita Federal ou baixar os arquivos do site da Receita pelo comando no Anaconda prompt na pasta deste projeto<br>
 <b>python dados_cnpj_baixa.py</b><br>
 Isto irá baixar os arquivos zipados do site da Receita na pasta "dados-publicos-zip".<br><br>
 
-<b>ATENÇÃO: Em 14/8/2024 a página de dados abertos foi modificada, por isso o script dados_cnpj_baixa.py não vai pegar a base de dados mais atualizada. Altere a linha<br>
-url = 'http://200.152.38.155/CNPJ/' <br>para <br>url = 'http://200.152.38.155/CNPJ/dados_abertos_cnpj/2024-08/'</b><br>
+<b>ATENÇÃO: Em 14/8/2024 a página de dados abertos foi modificada, o script dados_cnpj_baixa.py foi atualizado para pegar a pasta do mês mais recente.</b><br>
 
 <s>O download no site da Receita é lento, pode demorar várias horas (a última vez levou 8 horas)<br></s>Se o download estiver muito lento, outra forma de baixar os arquivos é usar um gerenciador de downloads, como o https://portableapps.com/apps/internet/free-download-manager-portable.<br><br>
 Crie uma pasta com o nome <b>"dados-publicos"</b>. Se houver arquivos antigos nesta pasta, apague ou mova-os de lugar.<br>
