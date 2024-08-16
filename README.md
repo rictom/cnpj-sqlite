@@ -32,6 +32,9 @@ Baixe os arquivos do site da Receita pelo comando no Anaconda prompt na pasta de
 <b>python dados_cnpj_baixa.py</b><br>
 Isto irá baixar os arquivos zipados do site da Receita na pasta "dados-publicos-zip".<br><br>
 
+<b>ATENÇÃO: Em 14/8/2024 a página de dados abertos foi modificada, por isso o script dados_cnpj_baixa.py não vai pegar a base de dados mais atualizada. Altere a linha<br>
+url = 'http://200.152.38.155/CNPJ/' <br>para <br>url = 'http://200.152.38.155/CNPJ/dados_abertos_cnpj/2024-08/'</b><br>
+
 <s>O download no site da Receita é lento, pode demorar várias horas (a última vez levou 8 horas)<br></s>Se o download estiver muito lento, outra forma de baixar os arquivos é usar um gerenciador de downloads, como o https://portableapps.com/apps/internet/free-download-manager-portable.<br><br>
 Crie uma pasta com o nome <b>"dados-publicos"</b>. Se houver arquivos antigos nesta pasta, apague ou mova-os de lugar.<br>
 
