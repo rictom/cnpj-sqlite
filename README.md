@@ -28,7 +28,7 @@ Instale as bibliotecas necessárias neste projeto usando o comando no Anaconda p
 <b>pip install -r requirements.txt</b><br><br>
 Se desejar apenas uma relação dos arquivos disponíveis no site da Receita Federal ou baixar os arquivos, faça o seguinte comando no Anaconda prompt na pasta deste projeto:<br>
 <b>python dados_cnpj_baixa.py</b><br>
-Isto irá baixar os arquivos zipados do site da Receita na pasta "dados-publicos-zip".<br><br>
+Isto irá baixar os arquivos zipados do site da Receita na pasta "dados-publicos-zip".<br>
 
 <b>ATENÇÃO: Em 14/8/2024 a página de dados abertos foi modificada, o script dados_cnpj_baixa.py foi atualizado para pegar a pasta do mês mais recente.</b><br>
 
