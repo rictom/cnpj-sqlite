@@ -22,6 +22,8 @@ Se você instalou o Anaconda no Windows, todas as operações de linha de comand
 Quando se está em um ambiente padrão do Anaconda prompt, o console começa com (base) C:\Users\\<apelido do usuário>\:<br>
 ![image](https://github.com/rictom/cnpj-sqlite/assets/71139693/3a5b0bb6-42f1-4fa2-9916-02484ffefde5)
 
+Se não for utilizar o Anaconda, sugere-se criar um environment "ambiente" próprio para rodar o projeto. Siga as orientações para criar um ambiente no python, sem Anaconda:<br>
+https://docs.python.org/pt-br/3/library/venv.html
 ## Utilizando o script:
 Use o comando <b>cd</b> para "navegar" o prompt até a pasta com o código deste projeto, por exemplo, <b>cd C:\cnpj-sqlite-main</b>. Isto dependerá do lugar que você descompactou a cópia deste projeto no seu HD.<br><br>
 Instale as bibliotecas necessárias neste projeto usando o comando no Anaconda prompt:<br>
