@@ -74,6 +74,12 @@ def carrega_dados():
     colunas_pais = ['codigo', 'descricao']
     colunas_qualificacao_socio = ['codigo', 'descricao']
     colunas_natureza = ['codigo', 'descricao']
+    def exibir_arquivos(pasta):
+        print(f'Arquivos na pasta {pasta}:')
+        for arquivo in glob.glob(os.path.join(pasta, '*')):
+            print(arquivo)
+
+    exibir_arquivos(pasta_saida)
     for arquivo in glob.glob(os.path.join(pasta_saida, '*CNAECSV')):
         carrega_tabela(arquivo, 'cnae', colunas_cnae)
 
@@ -88,20 +94,20 @@ def carrega_dados():
 
     for arquivo in glob.glob(os.path.join(pasta_saida, '*SIMPLES.CSV.*')):
         carrega_tabela(arquivo, 'simples', colunas_simples)
-
-    for arquivo in glob.glob(os.path.join(pasta_saida, '*MOTI.CSV.*')):
+        
+    for arquivo in glob.glob(os.path.join(pasta_saida, '*MOTICSV')):
         carrega_tabela(arquivo, 'motivo', colunas_motivo)
 
-    for arquivo in glob.glob(os.path.join(pasta_saida, '*MUNIC.CSV.*')):
+    for arquivo in glob.glob(os.path.join(pasta_saida, '*MUNICCSV')):
         carrega_tabela(arquivo, 'municipio', colunas_municipio)
 
-    for arquivo in glob.glob(os.path.join(pasta_saida, '*NATJU.CSV.*')):
+    for arquivo in glob.glob(os.path.join(pasta_saida, '*NATJUCSV')):
         carrega_tabela(arquivo, 'natureza_juridica', colunas_natureza)
 
-    for arquivo in glob.glob(os.path.join(pasta_saida, '*PAIS.CSV.*')):
+    for arquivo in glob.glob(os.path.join(pasta_saida, '*PAISCSV')):
         carrega_tabela(arquivo, 'pais', colunas_pais)
 
-    for arquivo in glob.glob(os.path.join(pasta_saida, '*QUALS.CSV.*')):
+    for arquivo in glob.glob(os.path.join(pasta_saida, '*QUALSCSV')):
         carrega_tabela(arquivo, 'qualificacao_socio', colunas_qualificacao_socio)
 
 print('Iniciando carga de dados...')
