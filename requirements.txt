@@ -7,3 +7,5 @@ requests
 bs4
 wget
 parfive
+sqlite3
+csv

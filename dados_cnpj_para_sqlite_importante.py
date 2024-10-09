@@ -47,8 +47,12 @@ def carrega_tabela(arquivo_csv, nome_tabela, colunas):
 
             cursor.executemany(f'INSERT INTO {nome_tabela} VALUES ({", ".join("?" for _ in colunas)});', reader)
 
+        colunas_com_indice = ['codigo', 'cnpj_basico', 'razao_social', 'nome_fantasia', 'cep', 'nome_socio', 'cnpj_cpf_socio']
+
         for coluna in colunas:
-            cursor.execute(f'CREATE INDEX IF NOT EXISTS idx_{nome_tabela}_{coluna} ON {nome_tabela}({coluna});')
+            if coluna in colunas_com_indice:
+                cursor.execute(f'CREATE INDEX IF NOT EXISTS idx_{nome_tabela}_{coluna} ON {nome_tabela}({coluna});')
+
     
     if bApagaDescompactadosAposUso:
         print('apagando arquivo ' + arquivo_csv)
@@ -111,6 +115,6 @@ def carrega_dados():
     for arquivo in glob.glob(os.path.join(pasta_saida, '*QUALSCSV')):
         carrega_tabela(arquivo, 'qualificacao_socio', colunas_qualificacao_socio)
 
-print('Iniciando...')
+print('Iniciando carga de dados...')
 carrega_dados()
-print('FIM!!!', time.asctime())
+print('Carga de dados concluída:', time.asctime())
