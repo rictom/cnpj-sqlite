@@ -2,8 +2,7 @@
 Script em python para converter os arquivos de dados públicos de CNPJs para o formato [SQLITE](https://pt.wikipedia.org/wiki/SQLite). O código é compatível com o layout das tabelas disponibilizadas pela Receita Federal a partir de 2021.
 
 ## Dados públicos de CNPJs no site da Receita:
-Os arquivos csv zipados com os dados de CNPJs estão disponíveis em https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj ou https://arquivos.receitafederal.gov.br/cnpj/dados_abertos_cnpj/ (a partir de 28/10/2024.)<br>
-Como a pasta no site de dados abertos referente ao mês de outubro/2024 está sem dois arquivos, carreguei uma cópia em https://www.mediafire.com/folder/fak8pc4sw91id/dados-publicos-zip-2024-outubro<br><br>
+Os arquivos csv zipados com os dados de CNPJs estão disponíveis em https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj ou https://arquivos.receitafederal.gov.br/cnpj/dados_abertos_cnpj/ (link a partir de 28/10/2024.)<br>
 
 ## Pré-requisitos:
 Python 3.9 ou posterior;<br>
