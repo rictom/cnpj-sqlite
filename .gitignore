@@ -1,0 +1,6 @@
+# Ignorar ambiente virtual
+.venv/
+
+# Ignorar dados públicos e suas versões comprimidas
+dados-publicos/
+dados-publicos-zip/
