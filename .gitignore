@@ -1,0 +1,4 @@
+.venv
+.env
+dados-publicos-zip/*
+dados-publicos/*
