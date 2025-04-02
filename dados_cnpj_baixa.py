@@ -84,7 +84,9 @@ if __name__ == '__main__':
 print(time.asctime(), 'Início do Download dos arquivos...')
 
 if True: #baixa usando parfive, download em paralelo
-    downloader = parfive.Downloader()
+    #downloader = parfive.Downloader()
+    headers = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Windows; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.114 Safari/537.36", "Accept": "*/*"}
+    downloader = parfive.Downloader(max_conn=5, max_splits=1, config=parfive.SessionConfig(headers=headers))
     for url in lista:
         downloader.enqueue_file(url, path=pasta_zip, filename=os.path.split(url)[1])
     downloader.download()
