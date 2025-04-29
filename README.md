@@ -62,6 +62,11 @@ Lista das tabelas do arquivo cnpj.db no DBBrowser.
 
 Na pasta [exemplos](https://github.com/rictom/cnpj-sqlite/tree/main/exemplos) há amostras de consultas em SQL para exibir dados de empresas. Cole os exemplos na aba "Executar SQL" do DBBrowser para testar.<br>
 
+## Como gerar listas de forma alternativa:
+A forma mais direta de gerar listas é abrindo a base cnpj.db com o DBBrowser. Contudo, para quem não tem familiaridade com SQL, pode-se utilizar o script em 
+https://github.com/rictom/cnpj_consulta
+que gera listas a partir de parâmetros como UF, Município ou CNAE. Existe a versão em python ou em aplicativo Windows. 
+
 ## Conversão para mysql:
 O script em https://github.com/rictom/cnpj-mysql faz o carregamento dos dados para o banco de dados em MYSQL.<br>
 
