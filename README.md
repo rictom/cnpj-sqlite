@@ -61,6 +61,11 @@ O arquivo final poderá ser aberto no  [DBBrowser](https://sqlitebrowser.org/) f
 Lista das tabelas do arquivo cnpj.db no DBBrowser.
 
 Na pasta [exemplos](https://github.com/rictom/cnpj-sqlite/tree/main/exemplos) há amostras de consultas em SQL para exibir dados de empresas. Cole os exemplos na aba "Executar SQL" do DBBrowser para testar.<br>
+![image](https://github.com/user-attachments/assets/bc566b7c-74f2-46d4-8d88-eefaf95bce83)
+
+Isso irá apresentar o resultado:
+![image](https://github.com/user-attachments/assets/c3714849-a9dc-453f-930d-3cce37cacda2)
+
 
 ## Como gerar listas de forma alternativa:
 A forma mais direta de gerar listas é abrindo a base cnpj.db com o DBBrowser. Contudo, para quem não tem familiaridade com SQL, pode-se utilizar o script em 
