@@ -1,8 +1,9 @@
 # CNPJ-SQLITE
-Script em python para converter os arquivos de dados públicos de CNPJs para o formato [SQLITE](https://pt.wikipedia.org/wiki/SQLite). O código é compatível com o layout das tabelas disponibilizadas pela Receita Federal a partir de 2021. <b>O código não foi gerado por IA!!!</b><br>
+Script em python para baixar e converter os arquivos de dados públicos de CNPJs para o formato [SQLITE](https://pt.wikipedia.org/wiki/SQLite). O código é compatível com o layout das tabelas disponibilizadas pela Receita Federal a partir de 2021. <b>O código não foi gerado por IA!!!</b><br>
 
 ## Dados públicos de CNPJs no site da Receita:
-Os arquivos csv zipados com os dados de CNPJs estão disponíveis em https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj e [https://arquivos.receitafederal.gov.br/dados/cnpj/dados_abertos_cnpj/](https://arquivos.receitafederal.gov.br/dados/cnpj/dados_abertos_cnpj/). O dicionário de dados é [este](https://www.gov.br/receitafederal/dados/cnpj-metadados.pdf).<br>
+Os arquivos csv zipados com os dados de CNPJs são disponibilizados mensalmente em https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj e [https://arquivos.receitafederal.gov.br/dados/cnpj/dados_abertos_cnpj/](https://arquivos.receitafederal.gov.br/dados/cnpj/dados_abertos_cnpj/). Esse diretório contém 37 arquivos. As tabelas maiores, como empresas, estabelecimentos e sócios, estão divididas em dez partes. A tabela empresas tem dados das matrizes dos cnpjs, como razão social, natureza jurídica e capital social. A tabela estabelecimentos contém dados cadastrais de cada matriz/filial, como nome fantasia, cnae, endereço, etc. A tabela sócios tem informações como nome de sócio, data de entrada e tipo de vínculo. O dicionário de dados está disponível [aqui](https://www.gov.br/receitafederal/dados/cnpj-metadados.pdf). <br>
+Depois de deszipadas, cada arquivo é um csv, isto é, arquivo de texto com as colunas separadas pelo caractere ponto e vírgula (;). Devido ao grande tamanho das tabelas (são mais de 60 milhões de registros) fica inviável trabalhar diretamente os csvs no Excel ou outro aplicativo de planilha. Este projeto gera um arquivo em formato sqlite .<br>
 
 ## Pré-requisitos:
 Python 3.9 ou posterior;<br>
