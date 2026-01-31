@@ -71,12 +71,16 @@ Isso irá apresentar o resultado:
 
 
 ## Como gerar listas de forma alternativa:
-A forma mais direta de gerar listas é abrindo a base cnpj.db com o DBBrowser. Contudo, para quem não tem familiaridade com SQL, pode-se utilizar o script em 
-https://github.com/rictom/cnpj_consulta
+A forma mais direta de gerar listas é abrindo a base cnpj.db com o DBBrowser. Contudo, para quem não tem familiaridade com SQL, pode-se utilizar o script em <br>
+https://github.com/rictom/cnpj_consulta <br>
 que gera listas a partir de parâmetros como UF, Município ou CNAE. Existe a versão em python ou em aplicativo Windows. 
 
+## Consultas por API:
+O projeto seguinte é uma api em python (fastAPI) para consultar a base em sqlite cnpj.db:<br> 
+https://github.com/rictom/cnpj_api
+
 ## Conversão para mysql:
-O script em https://github.com/rictom/cnpj-mysql faz o carregamento dos dados para o banco de dados em MYSQL.<br>
+O script em https://github.com/rictom/cnpj-mysql faz o carregamento dos dados para MYSQL ou POSTGRES.<br>
 
 ## Histórico de versões
 
