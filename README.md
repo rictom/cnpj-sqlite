@@ -1,6 +1,6 @@
 # CNPJ-SQLITE
 Script em python para baixar e converter os arquivos de dados públicos de CNPJs para o formato [SQLITE](https://pt.wikipedia.org/wiki/SQLite). O código é compatível com o layout das tabelas disponibilizadas pela Receita Federal a partir de 2021.<br><br>
-**AVISO IMPORTANTE: Ao final de janeiro/2026, a RFB alterou o layout da página, nome e caminho dos arquivos, por isso o script parou de funcionar!!! Aguarde uma atualização ou colabore para manter este projeto**<br>
+**AVISO IMPORTANTE: Ao final de janeiro/2026, a RFB alterou o layout da página, nome e caminho dos arquivos, por isso a parte do script que baixa os arquivosparou de funcionar!!! Aguarde uma atualização ou colabore para manter este projeto**<br>
 
 ## Dados públicos de CNPJs no site da Receita:
 Os arquivos csv zipados com os dados de CNPJs são disponibilizados mensalmente em https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj e <s>[https://arquivos.receitafederal.gov.br/dados/cnpj/dados_abertos_cnpj/](https://arquivos.receitafederal.gov.br/dados/cnpj/dados_abertos_cnpj/)</s>. Esse diretório contém 37 arquivos. As tabelas maiores, como empresas, estabelecimentos e sócios, estão divididas em dez partes. A tabela empresas tem dados das matrizes dos cnpjs, como razão social, natureza jurídica e capital social. A tabela estabelecimentos contém dados cadastrais de cada matriz/filial, como nome fantasia, cnae, endereço, etc. A tabela sócios tem informações como nome de sócio, data de entrada e tipo de vínculo. O dicionário de dados está disponível [aqui](https://www.gov.br/receitafederal/dados/cnpj-metadados.pdf). <br>
@@ -30,13 +30,20 @@ https://docs.python.org/pt-br/3/library/venv.html
 Use o comando <b>cd</b> para "navegar" o prompt até a pasta com o código deste projeto, por exemplo, <b>cd C:\cnpj-sqlite-main</b>. Isto dependerá do lugar que você descompactou a cópia deste projeto no seu HD.<br><br>
 Instale as bibliotecas necessárias neste projeto usando o comando no Anaconda prompt:<br>
 <b>pip install -r requirements.txt</b><br><br>
-Se desejar apenas uma relação dos arquivos disponíveis no site da Receita Federal ou baixar os arquivos, faça o seguinte comando no Anaconda prompt na pasta deste projeto:<br>
+<s>Se desejar apenas uma relação dos arquivos disponíveis no site da Receita Federal ou baixar os arquivos, faça o seguinte comando no Anaconda prompt na pasta deste projeto:<br>
 <b>python dados_cnpj_baixa.py</b><br>
 Isto irá baixar os arquivos zipados do site da Receita na pasta "dados-publicos-zip".<br>
-
 <b>ATENÇÃO: Em 14/8/2024 a página de dados abertos foi modificada, o script dados_cnpj_baixa.py foi atualizado para pegar a pasta do mês mais recente.</b><br>
-
 <s>O download no site da Receita é lento, pode demorar várias horas (a última vez levou 8 horas)<br></s>Se o download estiver muito lento, outra forma de baixar os arquivos é usar um gerenciador de downloads, como o https://portableapps.com/apps/internet/free-download-manager-portable.<br><br>
+</s>
+Em janeiro/2026 a RFB alterou o local dos arquivos, por isso o script dados_cnpj_baixa.py parou de funcionar.<br>
+Para baixar os arquivos csv, vá até a página [https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj](https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj) , procure a seção "Recursos", clique no botão "Acessar Recurso" em "Inscrições no CNPJ". <br>
+Isto levará para uma página de Download. Selecione o mês desejado e baixe os (37) arquivos: Cnaes.zip, Motivos.zip, Municipios.zip, Naturezas.zip, Paises.zip, Qualificacoes.zip, Simples.zip, Empresas0.zip, Empresas1.zip, Empresas2.zip, Empresas3.zip, Empresas4.zip, Empresas5.zip, Empresas6.zip, Empresas7.zip, Empresas8.zip, Empresas9.zip, Estabelecimentos0.zip, Estabelecimentos1.zip, Estabelecimentos2.zip, Estabelecimentos3.zip, Estabelecimentos4.zip, Estabelecimentos5.zip, Estabelecimentos6.zip, Estabelecimentos7.zip, Estabelecimentos8.zip, Estabelecimentos9.zip, Socios0.zip, Socios1.zip, Socios2.zip, Socios3.zip, Socios4.zip, Socios5.zip, Socios6.zip, Socios7.zip, Socios8.zip, Socios9.zip.<br>
+Copie os arquivos zip para ama pasta "dados-publicos-zip"
+
+
+
+
 Crie uma pasta com o nome <b>"dados-publicos"</b>. Se houver arquivos antigos nesta pasta, apague ou mova-os de lugar.<br>
 
 Para iniciar a conversão dos arquivos para o formato sqlite, digite em um console do Anaconda prompt:<br>
