@@ -37,14 +37,11 @@ Isto irá baixar os arquivos zipados do site da Receita na pasta "dados-publicos
 <s>O download no site da Receita é lento, pode demorar várias horas (a última vez levou 8 horas)<br></s>Se o download estiver muito lento, outra forma de baixar os arquivos é usar um gerenciador de downloads, como o https://portableapps.com/apps/internet/free-download-manager-portable.<br><br>
 </s>
 Em janeiro/2026 a RFB alterou o local dos arquivos, por isso o script dados_cnpj_baixa.py parou de funcionar.<br>
+Crie uma pasta com o nome <b>"dados-publicos"</b>. Se houver arquivos antigos nesta pasta, apague ou mova-os de lugar.<br>
 Para baixar os arquivos csv, vá até a página [https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj](https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj) , procure a seção "Recursos", clique no botão "Acessar Recurso" em "Inscrições no CNPJ". <br>
 Isto levará para uma página de Download. Selecione o mês desejado e baixe os (37) arquivos: Cnaes.zip, Motivos.zip, Municipios.zip, Naturezas.zip, Paises.zip, Qualificacoes.zip, Simples.zip, Empresas0.zip, Empresas1.zip, Empresas2.zip, Empresas3.zip, Empresas4.zip, Empresas5.zip, Empresas6.zip, Empresas7.zip, Empresas8.zip, Empresas9.zip, Estabelecimentos0.zip, Estabelecimentos1.zip, Estabelecimentos2.zip, Estabelecimentos3.zip, Estabelecimentos4.zip, Estabelecimentos5.zip, Estabelecimentos6.zip, Estabelecimentos7.zip, Estabelecimentos8.zip, Estabelecimentos9.zip, Socios0.zip, Socios1.zip, Socios2.zip, Socios3.zip, Socios4.zip, Socios5.zip, Socios6.zip, Socios7.zip, Socios8.zip, Socios9.zip.<br>
-Copie os arquivos zip para ama pasta "dados-publicos-zip"
-
-
-
-
-Crie uma pasta com o nome <b>"dados-publicos"</b>. Se houver arquivos antigos nesta pasta, apague ou mova-os de lugar.<br>
+Copie os arquivos zip para a pasta "dados-publicos-zip".<br>
+O site da RFB agora permite baixar uma pasta zipada correspondente ao ANO-MÊS. Se você baixar por esta opção, descompacte o arquivo ANO-MÊS.zip, e copie os 37 arquivos zip para a pasta "dados-publicos-zip".<br>
 
 Para iniciar a conversão dos arquivos para o formato sqlite, digite em um console do Anaconda prompt:<br>
 <b>python dados_cnpj_para_sqlite.py</b><br>
