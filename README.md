@@ -1,6 +1,6 @@
 # CNPJ-SQLITE
 Script em python para baixar e converter os arquivos de dados públicos de CNPJs para o formato [SQLITE](https://pt.wikipedia.org/wiki/SQLite). O código é compatível com o layout das tabelas disponibilizadas pela Receita Federal a partir de 2021.<br><br>
-**AVISO IMPORTANTE: Ao final de janeiro/2026, a RFB alterou o layout da página e caminho dos arquivos. O script para baixar arquivos foi atualizado em março/2026, baseado na rotina do projeto [cnpj-data-pipeline](https://github.com/caiopizzol/cnpj-data-pipeline).**<br>
+**AVISO IMPORTANTE: Em agosto/2026 houve alteração no padrão dos csvs de sócios. A coluna cnpj_cpf_socio só tem o radical de cnpj (8 dígitos) se o sócio for empresa. A rotina foi corrigida para trocar o radical de cnpj pelo cnpj completo da empresa matriz**<br>
 
 ## Dados públicos de CNPJs no site da Receita:
 Os arquivos csv zipados com os dados de CNPJs são disponibilizados mensalmente em https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj. As tabelas maiores, como empresas, estabelecimentos e sócios, estão divididas em dez partes. A tabela empresas tem dados das matrizes dos cnpjs, como razão social, natureza jurídica e capital social. A tabela estabelecimentos contém dados cadastrais de cada matriz/filial, como nome fantasia, cnae, endereço, etc. A tabela sócios tem informações como nome de sócio, data de entrada e tipo de vínculo. O dicionário de dados está disponível [aqui](https://www.gov.br/receitafederal/dados/cnpj-metadados.pdf). <br>
