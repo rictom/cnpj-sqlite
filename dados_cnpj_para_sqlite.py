@@ -18,7 +18,7 @@ A utilização da biblioteca DASK tem desempenho melhor do que o uso de PANDAS (
 
 import pandas as pd, sqlite3, sqlalchemy
 import glob, time, dask.dataframe as dd
-import os, sys, zipfile
+import os, sys, zipfile, gc
 
 dataReferencia = 'xx/xx/2026' #input('Data de referência da base dd/mm/aaaa: ')
 pasta_compactados = r"dados-publicos-zip" #local dos arquivos zipados da Receita
@@ -60,6 +60,11 @@ def carregaTabelaCodigo(extensaoArquivo, nomeTabela):
     dtab = pd.read_csv(arquivo, dtype=str, sep=';', encoding='latin1', header=None, names=['codigo','descricao'])
     dtab.to_sql(nomeTabela, engine, if_exists='replace', index=None)
     engine.execute(f'CREATE INDEX idx_{nomeTabela} ON {nomeTabela}(codigo);')
+
+    #Coleta de lixo (liberar RAM)
+    del dtab
+    gc.collect()
+
     if bApagaDescompactadosAposUso:
         print('apagando arquivo '+arquivo)
         os.remove(arquivo)
@@ -153,6 +158,11 @@ def carregaTipo(nome_tabela, tipo, colunas):
         #dask possibilita usar curinga no nome de arquivo, por ex: 
         #ddf = dd.read_csv(pasta_saida+r'\*' + tipo, sep=';', header=None, names=colunas ...
         ddf.to_sql(nome_tabela, engine_url, index=None, if_exists='append', dtype=sqlalchemy.sql.sqltypes.TEXT)
+
+        #Coleta de lixo (liberar RAM)
+        del ddf
+        gc.collect()
+
         if bApagaDescompactadosAposUso:
             print(f'apagando o arquivo {arq=}')
             os.remove(arq)
