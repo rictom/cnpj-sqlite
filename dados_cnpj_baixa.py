@@ -68,7 +68,8 @@ def consulta_base_webdap(share_token="gn672Ad4CF8N6TK", base_url="https://arquiv
     #urlBaseArquivosDoMes = f'https://arquivos.receitafederal.gov.br/public.php/dav/files/{share_token}/{ultimoAnoMes}/' #para baixar usando requests sem webdav
     #urlPaginaDownloadMeses = f'https://arquivos.receitafederal.gov.br/index.php/s/{share_token}'
     #novos links a partir de 2026-10-12
-    urlBaseArquivosDoMes = f'https://arquivos.receitafederal.gov.br/index.php/s/{share_token}?dir=/Dados/Cadastros/CNPJ/{ultimoAnoMes}/' #para baixar usando requests sem webdav
+    #urlBaseArquivosDoMes = f'https://arquivos.receitafederal.gov.br/index.php/s/{share_token}?dir=/Dados/Cadastros/CNPJ/{ultimoAnoMes}/' #para baixar usando requests sem webdav
+    urlBaseArquivosDoMes = f'https://arquivos.receitafederal.gov.br/public.php/dav/files/{share_token}/Dados/Cadastros/CNPJ/{ultimoAnoMes}/'
     urlPaginaDownloadMeses = f'https://arquivos.receitafederal.gov.br/index.php/s/{share_token}?dir=/Dados/Cadastros/CNPJ'
     
     #return {'ultimoAnoMes':ultimoAnoMes, 'arquivos':files}
