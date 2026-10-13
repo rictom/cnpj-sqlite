@@ -35,7 +35,7 @@ def requisitos():
             sys.exit(1)
 #.def requisitos
 
-def consulta_base_webdap(share_token="gn672Ad4CF8N6TK", base_url="https://arquivos.receitafederal.gov.br/public.php/webdav"):
+def consulta_base_webdap(share_token="gn672Ad4CF8N6TK", base_url="https://arquivos.receitafederal.gov.br/public.php/webdav/Dados/Cadastros/CNPJ"):
     # código adaptado de github.com/caiopizzol/cnpj-data-pipeline/blob/main/downloader.py
     from xml.etree import ElementTree
     DAV_NS = {"d": "DAV:"} # WebDAV XML namespace
